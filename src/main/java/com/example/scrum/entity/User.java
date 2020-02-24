@@ -18,23 +18,12 @@ import java.util.Set;
 public class User extends AbstractEntity {
 
     private String firstName;
-
     private String lastName;
-
     @Column(unique = true)
     private String username;
-
     @Column(unique = true)
     private String email;
-
     private String password;
-
-    private boolean isAccountExpired;
-
-    private boolean isAccountLocked;
-
-    private boolean isCredentialsExpired;
-
     private boolean isEnabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -51,7 +40,10 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserProject> userProjects = new HashSet<>();
 
-/*    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private VerificationToken token;
+
+    /*    @ManyToOne(fetch = FetchType.EAGER)
     private Project lastOpenedProject;*/
 
     public String getName() {
