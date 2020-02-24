@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="header" class="row">
+    <nav class="navbar navbar-dark bg-dark" style="width: 100%;">
+        <div>
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" alt="">
+            </a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Pulpity</a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Projekty</a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Zgłoszenia</a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Tempo</a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Tablice</a>
+            <a class="btn btn-dark mr-3" href="/" role="button">Portfolio</a>
+        </div>
+
+        <div sec:authorize="isAnonymous()" style="float: left;">
+            <a class="btn btn btn-dark" href="/loginSuccess" role="button" style="float: left;">Zaloguj się</a>
+            <a class="btn btn btn-dark" href="/register" role="button" style="float: left;">Zarejestruj się</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-dark" href="/logout" role="button">Wyloguj się</a>
+        </div>
+
+    </nav>
+</div>
+</body>
+</html>

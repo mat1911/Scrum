@@ -19,7 +19,6 @@ public class User extends AbstractEntity {
 
     private String firstName;
 
-
     private String lastName;
 
     @Column(unique = true)
@@ -52,8 +51,8 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserProject> userProjects = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Project lastOpenedProject;
+/*    @ManyToOne(fetch = FetchType.EAGER)
+    private Project lastOpenedProject;*/
 
     public String getName() {
         return firstName + " " + lastName + " (" + username + ")";
