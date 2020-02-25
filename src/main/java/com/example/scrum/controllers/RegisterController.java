@@ -72,7 +72,7 @@ public class RegisterController {
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationSuccessEvent(appUrl, addedUser));
         }catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
             model.addAttribute("messageHeader", "WYSTĄPIŁ PROBLEM!");
             model.addAttribute("message", "Email z linkiem do aktywacji Twojego konta nie został wysłany. Spróbuj ponownie później.");
             return "infoPages/informationPage";

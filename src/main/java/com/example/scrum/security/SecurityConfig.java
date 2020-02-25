@@ -35,6 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin()
+                .loginPage("/login")
+                .permitAll()
                 .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                 .and()
                 .logout().logoutSuccessUrl("/");

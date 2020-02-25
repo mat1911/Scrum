@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zaloguj się</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-8 mt-5 offset-1">
+
+            <form method = "post" th:action="@{/login}">
+
+                <h1 class="text-center font-weight-bold">LOGOWANIE</h1>
+
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Niepoprawna nazwa użytkownika lub hasło lub konto nie zostało aktywowane!
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Nazwa użytkownika</label>
+                    <input id="username" type="text" class="form-control" name="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Hasło</label>
+                    <input id="password" type="password" class="form-control" name="password">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-dark" type="submit">Zaloguj się</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
