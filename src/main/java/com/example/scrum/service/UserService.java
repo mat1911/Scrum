@@ -4,6 +4,7 @@ import com.example.scrum.dto.UserRegisterDto;
 import com.example.scrum.entity.Role;
 import com.example.scrum.entity.User;
 import com.example.scrum.entity.VerificationToken;
+import com.example.scrum.exceptions.UserNotFoundException;
 import com.example.scrum.mappers.UserMapper;
 import com.example.scrum.repository.RoleRepository;
 import com.example.scrum.repository.TokenRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,34 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final UserMapper userMapper;
 
-    public void createVerificationToken(User user, String token){
+
+    public User changeUserPassword(Long userId, String newPassword){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User object is null!"));
+
+        user.setPassword(encodePassword(newPassword));
+
+        return userRepository.save(user);
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    public User findByEmail(String email){
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with given email does not exist!"));
+    }
+
+    public String createVerificationToken(User user){
+
+        String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken(user, token);
         tokenRepository.save(verificationToken);
+
+        return token;
     }
 
     public VerificationToken getVerificationToken(String token){
@@ -36,7 +63,7 @@ public class UserService {
     public User addNewUser(UserRegisterDto userToAdd){
 
         if(Objects.isNull(userToAdd)){
-            throw new NullPointerException("User object is null!");
+            throw new UserNotFoundException("User object is null!");
         }
 
         userToAdd.setPassword(encodePassword(userToAdd.getPassword()));

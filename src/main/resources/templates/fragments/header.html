@@ -24,7 +24,9 @@
         </div>
 
         <div sec:authorize="isAuthenticated()">
-            <a class="btn btn-dark" href="/logout" role="button">Wyloguj się</a>
+            <form method="post" th:action="@{/logout}">
+                <button class="btn btn-dark" type="submit">Wyloguj się</button>
+            </form>
         </div>
 
     </nav>
