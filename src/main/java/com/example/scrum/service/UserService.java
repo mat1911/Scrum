@@ -26,7 +26,6 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final UserMapper userMapper;
 
-
     public User changeUserPassword(Long userId, String newPassword){
 
         User user = userRepository.findById(userId)
@@ -45,6 +44,12 @@ public class UserService {
         return userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with given email does not exist!"));
+    }
+
+    public User findById(Long id){
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with given id does not exist!"));
     }
 
     public String createVerificationToken(User user){

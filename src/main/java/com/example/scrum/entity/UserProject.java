@@ -1,9 +1,6 @@
 package com.example.scrum.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,16 +12,17 @@ import java.io.Serializable;
 @Table(name = "user_projects")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserProject implements Serializable {
 
     @EmbeddedId
     private UserProjectId id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("projectId")
     private Project project;
 

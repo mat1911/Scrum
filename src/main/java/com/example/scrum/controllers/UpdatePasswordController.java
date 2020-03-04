@@ -76,7 +76,6 @@ public class UpdatePasswordController {
 
         userService.changeUserPassword(id, passwordDto.getPassword());
 
-
         model.addAttribute("messageHeader", "HASŁO ZOSTAŁO ZMIENIONE");
         model.addAttribute("message", "Twoje hasło zostało zmienione. Możesz zalogować się na swoje konto.");
         return "infoPages/informationPage";

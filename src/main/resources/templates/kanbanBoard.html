@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kanban board</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+
+        <div class="col-10 mt-5" >
+
+            <div class="card w-50 float-left"  th:each="story : ${stories}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${story.getTitle()}"></h5>
+                    <p class="card-text" th:text="${story.getDescription()}"></p>
+                    <p class="card-text" th:text="${story.getAcceptanceCriteria()}"></p>
+                    <p class="card-text" th:text="${story.getShortDescription()}"></p>
+                    <p class="card-text" th:text="${story.getNumber()}"></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,10 +1,8 @@
 package com.example.scrum.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,10 +15,12 @@ import java.util.Set;
 @Table(name = "projects")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Project extends AbstractEntity {
 
+    private Long id;
     private String name;
-
+    @Column(length = 500)
     private String description;
 
     @OneToMany(mappedBy = "project")
