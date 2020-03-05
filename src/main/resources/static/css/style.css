@@ -1,11 +1,5 @@
-.c1{
+.kanbanCol{
     border-style: solid;
-    border-color: red;
-    border-width: 2px;
-}
-
-.c2{
-    border-style: solid;
-    border-color: blue;
-    border-width: 2px;
+    border-color: black;
+    height: 100vh;
 }

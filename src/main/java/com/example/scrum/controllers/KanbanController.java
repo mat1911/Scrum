@@ -1,5 +1,6 @@
 package com.example.scrum.controllers;
 
+import com.example.scrum.entity.Status;
 import com.example.scrum.entity.Story;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,19 @@ public class KanbanController {
                         .shortDescription("Krótki opis hiustoryjki")
                         .number(2L)
                         .storyPoints(5)
+                        .status(new Status("TO_DO"))
+                        /*.status(new Status("BACKLOG"))*/
                         .acceptanceCriteria("Musi działać")
+                        .build(),
+
+                Story.builder()
+                        .title("Historyjka2")
+                        .description("Opis historyjki2")
+                        .shortDescription("Krótki opis hiustoryjki2")
+                        .number(23L)
+                        .storyPoints(53)
+                        .acceptanceCriteria("Musi działać2")
+                        .status(new Status("BACKLOG"))
                         .build()
         );
 

@@ -7,8 +7,42 @@
     <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
     <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <script>
+
+
+        $(function () {
+
+            $(".draggable").ready().draggable({
+                containment: "#droppable",
+                revert: "invalid",
+                stack: ".draggable"
+            });
+
+            $(".droppable").droppable({
+                drop: function (event, ui) {
+
+                    $(this)
+                        .append(ui.helper.css({
+                            position: 'relative',
+                            left: '0px',
+                            top: '0px'
+                        }));
+                }
+            })
+        });
+
+    </script>
+
 </head>
 <body>
+
+
 <div class="container-fluid">
 
     <div th:replace="fragments/header"></div>
@@ -18,17 +52,84 @@
         <div th:replace="fragments/menu"></div>
 
 
-        <div class="col-10 mt-5" >
+        <div class="col-10">
 
-            <div class="card w-50 float-left"  th:each="story : ${stories}">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${story.getTitle()}"></h5>
-                    <p class="card-text" th:text="${story.getDescription()}"></p>
-                    <p class="card-text" th:text="${story.getAcceptanceCriteria()}"></p>
-                    <p class="card-text" th:text="${story.getShortDescription()}"></p>
-                    <p class="card-text" th:text="${story.getNumber()}"></p>
+            <div class="row" style="height: 100vh">
+
+                <div class="col-2 droppable bg-success">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">BACKLOG</h4>
+
+                    <div class="card draggable" th:each="story : ${stories}"
+                         th:if="${story.getStatus().getName() == 'BACKLOG'}">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${story.getTitle()}"></h5>
+                            <p class="card-text" th:text="${story.getDescription()}"></p>
+                            <p class="card-text" th:text="${story.getAcceptanceCriteria()}"></p>
+                            <p class="card-text" th:text="${story.getShortDescription()}"></p>
+                            <p class="card-text" th:text="${story.getNumber()}"></p>
+                        </div>
+
+                    </div>
                 </div>
+
+                <div class="col-2 droppable bg-warning">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">SPRINT</h4>
+
+                    <div class="card draggable" th:each="story : ${stories}"
+                         th:if="${story.getStatus().getName() == 'SPRINT'}">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${story.getTitle()}"></h5>
+                            <p class="card-text" th:text="${story.getDescription()}"></p>
+                            <p class="card-text" th:text="${story.getAcceptanceCriteria()}"></p>
+                            <p class="card-text" th:text="${story.getShortDescription()}"></p>
+                            <p class="card-text" th:text="${story.getNumber()}"></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-2 droppable bg-danger">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">TO DO</h4>
+
+                    <div class="card draggable" th:each="story : ${stories}"
+                         th:if="${story.getStatus().getName() == 'TO_DO'}">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${story.getTitle()}"></h5>
+                            <p class="card-text" th:text="${story.getDescription()}"></p>
+                            <p class="card-text" th:text="${story.getAcceptanceCriteria()}"></p>
+                            <p class="card-text" th:text="${story.getShortDescription()}"></p>
+                            <p class="card-text" th:text="${story.getNumber()}"></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-2 droppable bg-info">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">DOING</h4>
+
+                </div>
+
+                <div class="col-2 droppable bg-secondary">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">VERIFY</h4>
+
+                </div>
+
+                <div class="col-2 droppable bg-primary">
+
+                    <h4 class="mt-2 text-white font-weight-bold text-center">DONE</h4>
+
+                </div>
+
             </div>
+
 
         </div>
 
@@ -36,4 +137,5 @@
 
 </div>
 </body>
+
 </html>

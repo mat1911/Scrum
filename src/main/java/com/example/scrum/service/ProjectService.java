@@ -39,10 +39,6 @@ public class ProjectService {
         Project project = projectMapper.toEntity(projectDto);
         User user = userService.findById(userId);
 
-
-        System.out.println(project.getName());
-        System.out.println(project.getDescription());
-
         project = projectRepository.save(project);
         assignProjectToUser(user, project);
 
