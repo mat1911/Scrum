@@ -2,6 +2,7 @@ package com.example.scrum.controllers;
 
 import com.example.scrum.dto.UserPasswordRecoverDto;
 import com.example.scrum.entity.User;
+import com.example.scrum.exceptions.ProjectNotSelectedException;
 import com.example.scrum.service.EmailService;
 import com.example.scrum.service.UserService;
 import com.example.scrum.validators.PasswordRecoveryFormValidator;
@@ -83,6 +84,8 @@ public class LoginController {
 
     @GetMapping("/loginSuccess")
     public String loginSuccess() {
+
+
         return "redirect:/";
     }
 

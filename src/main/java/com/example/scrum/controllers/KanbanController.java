@@ -1,73 +1,62 @@
 package com.example.scrum.controllers;
 
-import com.example.scrum.entity.Status;
-import com.example.scrum.entity.Story;
+import com.example.scrum.dto.StoriesDtoList;
+import com.example.scrum.dto.StoryDto;
+import com.example.scrum.service.SprintService;
+import com.example.scrum.service.StoryService;
+import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 @Controller
+@RequiredArgsConstructor
 public class KanbanController {
 
+    private final StoryService storyService;
+    private final SprintService sprintService;
+    private Semaphore synchKanbanMethods = new Semaphore(1);
+
     @GetMapping("/kanbanBoard")
+    @Synchronized
     public String kanban(Model model, HttpServletRequest request){
 
-        Long id = (Long) request.getSession().getAttribute("projectId");
-
-        System.out.println(id);
-
-        List<Story> stories = List.of(
-                Story.builder()
-                        .title("Historyjka")
-                        .description("Opis historyjki")
-                        .shortDescription("Krótki opis hiustoryjki")
-                        .number(2L)
-                        .storyPoints(5)
-                        .status(new Status("TO_DO"))
-                        /*.status(new Status("BACKLOG"))*/
-                        .acceptanceCriteria("Musi działać")
-                        .build(),
-
-                Story.builder()
-                        .title("Historyjka2")
-                        .description("Opis historyjki2")
-                        .shortDescription("Krótki opis hiustoryjki2")
-                        .number(23L)
-                        .storyPoints(53)
-                        .acceptanceCriteria("Musi działać2")
-                        .status(new Status("BACKLOG"))
-                        .build()
-        );
-
+        Long projectId = (Long) request.getSession().getAttribute("projectId");
+        List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(projectId);
         model.addAttribute("stories", stories);
 
         return "kanbanBoard";
     }
 
     @PostMapping("/kanbanBoard/{id}")
+    @Synchronized
     public String getKanbanBoard(Model model, HttpServletRequest request, @PathVariable Long id){
 
         request.getSession().setAttribute("projectId", id);
+        request.getSession().setAttribute("sprintId", sprintService.getCurrentSprint(id).getId());
 
-        List<Story> stories = List.of(
-                Story.builder()
-                        .title("Historyjka")
-                        .description("Opis historyjki")
-                        .shortDescription("Krótki opis hiustoryjki")
-                        .number(2L)
-                        .storyPoints(5)
-                        .acceptanceCriteria("Musi działać")
-                        .build()
-        );
-
+        List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(id);
         model.addAttribute("stories", stories);
 
         return "kanbanBoard";
+    }
+
+    @PostMapping("/updateStories")
+    @ResponseBody
+    @Synchronized
+    public void updateStories(@RequestBody StoriesDtoList stories, HttpServletRequest request){
+
+        Long projectId = (Long) request.getSession().getAttribute("projectId");
+        Long sprintId = (Long) request.getSession().getAttribute("sprintId");
+
+        stories.getStories().forEach(x -> System.out.println(x.getTitle() + " " + x.getStatus().getName()));
+
+        storyService.updateStories(stories, projectId, sprintId);
     }
 
 }

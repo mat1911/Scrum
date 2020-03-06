@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "stories")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Story extends AbstractEntity {
 
     private String title;
@@ -40,7 +39,7 @@ public class Story extends AbstractEntity {
     @JoinColumn(name = "added_by_user_id")
     private User addedBy;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_id")
     private Status status;
 
