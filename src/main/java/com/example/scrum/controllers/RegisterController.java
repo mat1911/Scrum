@@ -70,10 +70,10 @@ public class RegisterController {
         String token = userService.createVerificationToken(addedUser);
         emailService.sendActivationLink(addedUser, appUrl, token);
 
-        model.addAttribute("messageHeader", "REJESTRACJA UDANA");
-        model.addAttribute("message", "W celu aktywacji swojego konta udaj się na podanego w " +
-                "procesie rejestracji maila i wykorzystaj zamieszczony w mailu od nas link! \n" +
-                "Jeśli nie otrzymałeś wiadomości spróbuj zarejestrować się ponownie później.");
+        model.addAttribute("messageHeader", "REGISTRATION DONE");
+        model.addAttribute("message", "In order to activate your account, go to the e-mail " +
+                "given in the registration process and use the link provided in the e-mail from us! " +
+                "If you did not receive the message, try registering again later.");
 
         return "infoPages/informationPage";
     }
@@ -86,8 +86,8 @@ public class RegisterController {
         Calendar calendar = Calendar.getInstance();
 
         if ((verificationToken.getExpireDate().getTime() - calendar.getTime().getTime()) <= 0) {
-            model.addAttribute("messageHeader", "KONTO NIE ZOSTAŁO AKTYWOWANE!");
-            model.addAttribute("message", "Twoje konto nie zostało aktywowane. Może być to spowodowane wygaśnięciem ważności linku aktywacyjnego.");
+            model.addAttribute("messageHeader", "ACCOUNT IS NOT ACTIVATED!");
+            model.addAttribute("message", "Your account has not been activated. This may be due to the expiry of the activation link.");
             return "infoPages/informationPage";
         }
 

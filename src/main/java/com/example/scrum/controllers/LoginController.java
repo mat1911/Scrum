@@ -74,10 +74,9 @@ public class LoginController {
             emailService.sendLinkToChangePassword(user, appUrl, token);
         }
 
-        model.addAttribute("messageHeader", "LINK DO ZMIANY HASŁA WYSŁANY!");
-        model.addAttribute("message", "Jeśli podany przez Ciebie email znajduje się w bazie danych" +
-                "wkrótce otrzymasz link.\n W przypadku nie otrzymania linku spróbuj ponownie później.");
-
+        model.addAttribute("messageHeader", "LINK TO CHANGE YOUR PASSWORD HAVE BEEN SENT!");
+        model.addAttribute("message", "If the email you have provided is in " +
+                "the database you will soon receive a link.\n If you do not receive the link, try again later.");
 
         return "infoPages/informationPage";
     }

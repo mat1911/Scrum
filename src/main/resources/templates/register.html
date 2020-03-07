@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Rejestracja</title>
+    <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
     <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
@@ -22,10 +22,10 @@
 
             <form method = "post" th:action="@{/register}" th:object="${user}" class="needs-validation" novalidate>
 
-                <h1 class="text-center font-weight-bold">REJESTRACJA</h1>
+                <h1 class="text-center font-weight-bold">REGISTRATION</h1>
 
                 <div class="form-group">
-                    <label for="username">Nazwa użytkownika</label>
+                    <label for="username">Username</label>
                     <input id="username" type="text" class="form-control" th:field="*{username}">
 
                     <div th:if="${errors.containsKey('username')}">
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="firstName">Imie</label>
+                    <label for="firstName">First name</label>
                     <input id="firstName" type="text" class="form-control" th:field="*{firstName}">
 
                     <div th:if="${errors.containsKey('firstName')}">
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="lastName">Nazwisko</label>
+                    <label for="lastName">Surname</label>
                     <input id="lastName" type="text" class="form-control" th:field="*{lastName}">
 
                     <div th:if="${errors.containsKey('lastName')}">
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Hasło</label>
+                    <label for="password">Password</label>
                     <input id="password" type="password" class="form-control" th:field="*{password}">
 
                     <div th:if="${errors.containsKey('password')}">
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="repeatedPassword">Powtórz hasło</label>
+                    <label for="repeatedPassword">Repeated password</label>
                     <input id="repeatedPassword" type="password" class="form-control" th:field="*{repeatedPassword}">
 
                       <div th:if="${errors.containsKey('repeatedPassword')}">
@@ -80,7 +80,7 @@
 
 
                 <div class="form-group">
-                    <button class="btn btn-dark" type="submit">Utwórz konto</button>
+                    <button class="btn btn-dark" type="submit">Create account</button>
                 </div>
 
             </form>

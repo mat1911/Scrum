@@ -38,8 +38,8 @@ public class UpdatePasswordController {
         Calendar calendar = Calendar.getInstance();
 
         if ((verificationToken.getExpireDate().getTime() - calendar.getTime().getTime()) <= 0) {
-            model.addAttribute("messageHeader", "LINK WYGASŁ!");
-            model.addAttribute("message", "Nie możesz zmienić hasła, ponieważ link wygasł!");
+            model.addAttribute("messageHeader", "LINK EXPIRED!");
+            model.addAttribute("message", "You cannot change your password because the link has expired!");
             return "infoPages/informationPage";
         }
 
@@ -76,8 +76,8 @@ public class UpdatePasswordController {
 
         userService.changeUserPassword(id, passwordDto.getPassword());
 
-        model.addAttribute("messageHeader", "HASŁO ZOSTAŁO ZMIENIONE");
-        model.addAttribute("message", "Twoje hasło zostało zmienione. Możesz zalogować się na swoje konto.");
+        model.addAttribute("messageHeader", "THE PASSWORD HAS BEEN CHANGED");
+        model.addAttribute("message", "Your password has been changed. You can log in to your account.");
         return "infoPages/informationPage";
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private final MailSender mailSender;
-    private final UserService userService;
 
     @Async
     public void sendEmail(String recipientAddress, String subject, String message){
@@ -28,11 +27,11 @@ public class EmailService {
     public void sendActivationLink(User user, String appUrl, String token){
 
         String recipientAddress = user.getEmail();
-        String subject = "Potwierdzenie rejestracji";
+        String subject = "Confirmation of registration";
         String confirmationUrl = appUrl + "/registrationConfirm?token=" + token;
-        String message = "Dziękujemy za rejestrację w aplikacji wspomagającej działanie według metodyki SCRUM!\n"
-                + "W celu aktywacji konta kliknij w link: http://localhost:8080" + confirmationUrl +
-                "\n Powyższy link będzie ważny tylko przez nastepne 24h.";
+        String message = "Thank you for registering in the application supporting work according to the SCRUM methodology!\n"
+                + "In order to activate your account click on the link: http://localhost:8080" + confirmationUrl +
+                "\n The above link will be valid only for the next 24 hours.";
 
 
         Thread thread = new Thread(() -> sendEmail(recipientAddress, subject, message));
@@ -42,10 +41,10 @@ public class EmailService {
     public void sendLinkToChangePassword(User user, String appUrl, String token){
 
         String recipientAddress = user.getEmail();
-        String subject = "Zmiana hasła";
+        String subject = "Change password";
         String confirmationUrl = appUrl + "/password/changePassword?token=" + token;
-        String message = "W celu zmiany hasła kliknij w link: http://localhost:8080" + confirmationUrl +
-                "\n Powyższy link będzie ważny tylko przez nastepne 24h.";
+        String message = "To change your password click on the link: http://localhost:8080" + confirmationUrl +
+                "\n The above link will only be valid for the next 24 hours.";
 
 
         Thread thread = new Thread(() -> sendEmail(recipientAddress, subject, message));

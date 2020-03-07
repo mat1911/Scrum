@@ -23,27 +23,27 @@ public class UserValidator implements Validator {
         EmailValidator emailValidator = EmailValidator.getInstance();
 
         if(Objects.isNull(user.getFirstName()) || !user.getFirstName().matches("[A-Za-ząćęłńóśźżĄĆĘŁŃŚŻŹ]{3,}")){
-            errors.rejectValue("firstName", "Imie powinno składać się tylko z liter i mieć minimum 3 znaki!");
+            errors.rejectValue("firstName", "First name should only consist of letters and have a minimum of 3 characters!");
         }
 
         if(Objects.isNull(user.getLastName()) || !user.getLastName().matches("[A-Za-ząćęłńóśźżĄĆĘŁŃŚŻŹ]{3,}")){
-            errors.rejectValue("lastName", "Nazwisko powinno składać się tylko z liter i mieć minimum 3 znaki!");
+            errors.rejectValue("lastName", "Surname should only consist of letters and have a minimum of 3 characters!");
         }
 
         if(Objects.isNull(user.getUsername()) || user.getUsername().length() < 3){
-            errors.rejectValue("username", "Nazwa użytkownika powinna składać się z minimum 3 znaków!");
+            errors.rejectValue("username", "Username should have minimum 3 characters!");
         }
 
         if(Objects.isNull(user.getEmail()) || !emailValidator.isValid(user.getEmail())){
-            errors.rejectValue("email", "Email jest niepoprawny!");
+            errors.rejectValue("email", "Email is not correct!");
         }
 
         if(Objects.isNull(user.getPassword()) || user.getPassword().length() < 3){
-            errors.rejectValue("password", "Hasło powinno składać się z minimum 3 znaków!");
+            errors.rejectValue("password", "Password should consist of minimum 3 characters!");
         }
 
         if(Objects.isNull(user.getRepeatedPassword()) || !user.getPassword().equals(user.getRepeatedPassword())){
-            errors.rejectValue("repeatedPassword", "Podane hasła nie zgadzają się lub pole jest puste!");
+            errors.rejectValue("repeatedPassword", "The passwords do not match or the field is empty!");
         }
 
     }
