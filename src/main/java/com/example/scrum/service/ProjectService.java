@@ -5,6 +5,7 @@ import com.example.scrum.entity.Project;
 import com.example.scrum.entity.User;
 import com.example.scrum.entity.UserProject;
 import com.example.scrum.entity.UserProjectId;
+import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.mappers.ProjectMapper;
 import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.UserProjectRepository;
@@ -43,6 +44,17 @@ public class ProjectService {
         assignProjectToUser(user, project);
 
         return project;
+    }
+
+    public UserProject addUserToProject(Long userId, Long projectId){
+
+        User invitedUser = userService.findById(userId);
+        Project project = projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
+
+
+        return assignProjectToUser(invitedUser, project);
     }
 
     private UserProject assignProjectToUser(User user, Project project){

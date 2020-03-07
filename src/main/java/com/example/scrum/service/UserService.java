@@ -4,6 +4,7 @@ import com.example.scrum.dto.UserRegisterDto;
 import com.example.scrum.entity.Role;
 import com.example.scrum.entity.User;
 import com.example.scrum.entity.VerificationToken;
+import com.example.scrum.exceptions.TokenException;
 import com.example.scrum.exceptions.UserNotFoundException;
 import com.example.scrum.mappers.UserMapper;
 import com.example.scrum.repository.RoleRepository;
@@ -62,7 +63,18 @@ public class UserService {
     }
 
     public VerificationToken getVerificationToken(String token){
-        return tokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Given token does not exist!"));
+        return tokenRepository.findByToken(token).orElseThrow(() -> new TokenException("Given token does not exist!"));
+    }
+
+    public Long deleteVerificationToken(String token){
+
+        VerificationToken verificationToken = tokenRepository
+                .findByToken(token)
+                .orElseThrow(() -> new TokenException("Given token does not exist!"));
+
+        tokenRepository.delete(verificationToken);
+
+        return verificationToken.getId();
     }
 
     public User addNewUser(UserRegisterDto userToAdd){

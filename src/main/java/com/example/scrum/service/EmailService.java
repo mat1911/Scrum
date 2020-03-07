@@ -1,5 +1,6 @@
 package com.example.scrum.service;
 
+import com.example.scrum.dto.UserInvitationDto;
 import com.example.scrum.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSender;
@@ -46,6 +47,18 @@ public class EmailService {
         String message = "To change your password click on the link: http://localhost:8080" + confirmationUrl +
                 "\n The above link will only be valid for the next 24 hours.";
 
+
+        Thread thread = new Thread(() -> sendEmail(recipientAddress, subject, message));
+        thread.start();
+    }
+
+    public void sendInvitationToProject(UserInvitationDto userInvitationDto, User projectOwner, String appUrl, String token){
+
+        String recipientAddress = userInvitationDto.getEmail();
+        String subject = "Invitation to project";
+        String confirmationUrl = appUrl + "/acceptInvitation?token=" + token + "&projectId=" + userInvitationDto.getProjectId();
+        String message = projectOwner.getFirstName() + " " + projectOwner.getLastName() +
+                " invited you to the project. To accept this invitation click on link: http://localhost:8080" + confirmationUrl;
 
         Thread thread = new Thread(() -> sendEmail(recipientAddress, subject, message));
         thread.start();
