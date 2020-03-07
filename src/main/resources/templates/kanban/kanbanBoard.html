@@ -12,9 +12,6 @@
           rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-    <script src="/js/dragDropElements.js"></script>
-
 </head>
 <body>
 
@@ -117,53 +114,6 @@
 </div>
 </body>
 
-<script th:inline="javascript">
-
-        $(".droppable").droppable({
-            drop: function (event, ui) {
-
-                /*Appending dragged div to droppable div*/
-                $(this)
-                    .append(ui.helper.css({
-                        position: 'relative',
-                        left: '0px',
-                        top: '0px',
-                        transform: "rotate(0deg)"
-                    }));
-
-                /*Updating status of stories and sending result*/
-                /*<![CDATA[*/
-                    var stories = /*[[${stories}]]*/[];
-
-                    for (var i = 0; i < stories.length; i++) {
-
-                        var story = document.getElementById(stories[i].id);
-                        var status = story.parentElement.id.toUpperCase();
-
-                        stories[i].status.name = status;
-                    }
-
-                /*]]>*/
-
-                stories = JSON.stringify({
-                    'stories': stories
-                });
-
-                $.ajax({
-                    url: "http://localhost:8080/updateStories",
-                    type: 'POST',
-                    data: stories,
-                    dataType: "html",
-                    contentType: 'application/json',
-                    mimeType: 'application/json',
-                    success: function (data) {
-                        console.log(data);
-                        return false;
-                    }
-                });
-
-            }
-        })
-</script>
+<div th:replace="kanban/dragAndDropScripts"></div>
 
 </html>

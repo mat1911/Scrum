@@ -4,6 +4,7 @@ import com.example.scrum.dto.StoriesDtoList;
 import com.example.scrum.dto.StoryDto;
 import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
+import com.example.scrum.exceptions.SprintNotFoundException;
 import com.example.scrum.mappers.StoryMapper;
 import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.SprintRepository;
@@ -26,7 +27,6 @@ public class StoryService {
     private final ProjectRepository projectRepository;
     private final StoryMapper storyMapper;
 
-
     public List<StoryDto> getStoriesFromCurrentSprint(Long projectId) {
 
         if (projectId == null) {
@@ -35,7 +35,7 @@ public class StoryService {
 
         return sprintRepository
                 .findCurrentByProject_Id(projectId, LocalDate.now())
-                .orElseThrow(() -> new ObjectNotFoundException("Sprint with such project id does not exist!"))
+                .orElseThrow(() -> new SprintNotFoundException("Sprint with such project id does not exist!"))
                 .getStories()
                 .stream()
                 .map(storyMapper::toDto)
@@ -46,6 +46,10 @@ public class StoryService {
 
         if (projectId == null) {
             throw new ProjectNotSelectedException("Project is not selected!");
+        }
+
+        if (sprintId == null) {
+            throw new SprintNotFoundException("Sprint is not found!");
         }
 
         storiesDtoList

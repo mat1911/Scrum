@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +19,6 @@ public class KanbanController {
 
     private final StoryService storyService;
     private final SprintService sprintService;
-    private Semaphore synchKanbanMethods = new Semaphore(1);
 
     @GetMapping("/kanbanBoard")
     @Synchronized
@@ -30,7 +28,7 @@ public class KanbanController {
         List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(projectId);
         model.addAttribute("stories", stories);
 
-        return "kanbanBoard";
+        return "kanban/kanbanBoard";
     }
 
     @PostMapping("/kanbanBoard/{id}")
@@ -43,7 +41,7 @@ public class KanbanController {
         List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(id);
         model.addAttribute("stories", stories);
 
-        return "kanbanBoard";
+        return "kanban/kanbanBoard";
     }
 
     @PostMapping("/updateStories")
@@ -53,8 +51,6 @@ public class KanbanController {
 
         Long projectId = (Long) request.getSession().getAttribute("projectId");
         Long sprintId = (Long) request.getSession().getAttribute("sprintId");
-
-        stories.getStories().forEach(x -> System.out.println(x.getTitle() + " " + x.getStatus().getName()));
 
         storyService.updateStories(stories, projectId, sprintId);
     }
