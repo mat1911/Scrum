@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectDto {
+public class AssignedUserDto {
 
     private Long id;
-    private String name;
-    private String description;
-    private Long ownerId;
+    private String firstName;
+    private String lastName;
 
 }

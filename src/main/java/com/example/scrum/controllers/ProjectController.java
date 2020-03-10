@@ -2,9 +2,8 @@ package com.example.scrum.controllers;
 
 import com.example.scrum.dto.ProjectDto;
 import com.example.scrum.dto.UserInvitationDto;
-import com.example.scrum.entity.Project;
 import com.example.scrum.entity.User;
-import com.example.scrum.entity.VerificationToken;
+import com.example.scrum.security.UserDetailServiceImpl;
 import com.example.scrum.security.UserDetailsImpl;
 import com.example.scrum.service.EmailService;
 import com.example.scrum.service.ProjectService;
@@ -13,12 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -32,9 +29,7 @@ public class ProjectController {
     @GetMapping("/projects")
     public String getProjects(Model model){
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getUserId();
-
+        Long userId = UserDetailServiceImpl.getCurrentUserId();
         List<ProjectDto> projects = projectService.getAllUserProjects(userId);
         model.addAttribute("projects", projects);
         model.addAttribute("userInvitation", new UserInvitationDto());
@@ -44,29 +39,37 @@ public class ProjectController {
 
     @GetMapping("/newProject")
     public String getNewProjectPage(Model model){
-
         model.addAttribute("project", new ProjectDto());
-
         return "projects/newProject";
     }
 
     @PostMapping("/newProject")
-    public String addNewProject(ProjectDto project, Model model){
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getUserId();
-
+    public String addNewProject(ProjectDto project){
+        Long userId = UserDetailServiceImpl.getCurrentUserId();
         projectService.addNewProject(userId, project);
-
         return "redirect:/projects";
     }
+
+    @PostMapping("/updateProject")
+    public String updateProject(@ModelAttribute ProjectDto project, HttpSession session){
+
+        Long projectId = (Long) session.getAttribute("projectId");
+        project.setId(projectId);
+        projectService.updateProject(project);
+        return "redirect:/projects";
+    }
+
+    @PostMapping("/selectProject")
+    @ResponseBody
+    public void selectProject(HttpSession session, @RequestParam("projectId") Long projectId){
+        session.setAttribute("projectId", projectId);
+        session.setAttribute("productOwnerId", projectService.findProjectOwner(projectId).getId());
+      }
 
     @PostMapping("/assignUser")
     public String sendInvitationToUser(Model model, UserInvitationDto userInvitationDto, WebRequest request){
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User productOwner = userService.findById(userDetails.getUserId());
-
+        User productOwner = userService.findById(UserDetailServiceImpl.getCurrentUserId());
         String appUrl = request.getContextPath();
         String token = userService.createVerificationToken(productOwner);
 
@@ -81,14 +84,30 @@ public class ProjectController {
     @GetMapping("/acceptInvitation")
     public String assignUserToProject(@RequestParam("token") String token, @RequestParam("projectId") Long projectId){
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long invitedUserId = userDetails.getUserId();
-
-        //userService.getVerificationToken(token);
+        Long invitedUserId = UserDetailServiceImpl.getCurrentUserId();
         userService.deleteVerificationToken(token);
         projectService.addUserToProject(invitedUserId, projectId);
 
         return "redirect:/projects";
+    }
+
+    @GetMapping("/projectSettings")
+    public String getProjectSettingsPage(HttpSession session, Model model, @RequestParam("projectId") Long projectId){
+
+        session.setAttribute("projectId", projectId);
+        session.setAttribute("productOwnerId", projectService.findProjectOwner(projectId).getId());
+        model.addAttribute("currentProject", projectService.getCurrentProjectAsDto(projectId));
+        model.addAttribute("assignedUsers", userService.findAllUsersAssignedToProject(projectId));
+        return "projects/projectsSettings";
+    }
+
+    @GetMapping("/deleteUser")
+    public String deleteUserFromProject(HttpSession session, Model model, @RequestParam("id") Long id){
+
+        Long projectId = (Long) session.getAttribute("projectId");
+        projectService.deleteUserFromProject(id, projectId);
+
+        return "redirect:/projectSettings?projectId=" + projectId;
     }
 
 }

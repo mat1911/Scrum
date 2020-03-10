@@ -11,11 +11,13 @@ import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.UserProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProjectService {
 
@@ -25,7 +27,14 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
 
 
-    public List<ProjectDto> getAllUserProjects(Long userId){
+    public User findProjectOwner(Long projectId){
+        return projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"))
+                .getOwner();
+    }
+
+    public List<ProjectDto> getAllUserProjects(Long userId) {
 
         return userProjectRepository
                 .findAllByUserId(userId)
@@ -35,18 +44,32 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    public Project addNewProject(Long userId, ProjectDto projectDto){
+    public Project addNewProject(Long userId, ProjectDto projectDto) {
 
         Project project = projectMapper.toEntity(projectDto);
         User user = userService.findById(userId);
 
+        project.setOwner(user);
         project = projectRepository.save(project);
         assignProjectToUser(user, project);
 
         return project;
     }
 
-    public UserProject addUserToProject(Long userId, Long projectId){
+    public Project updateProject(ProjectDto projectDto) {
+
+        Project project = projectRepository
+                .findById(projectDto.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
+
+        project.setName(projectDto.getName());
+        project.setDescription(projectDto.getDescription());
+        project = projectRepository.save(project);
+
+        return project;
+    }
+
+    public UserProject addUserToProject(Long userId, Long projectId) {
 
         User invitedUser = userService.findById(userId);
         Project project = projectRepository
@@ -57,7 +80,21 @@ public class ProjectService {
         return assignProjectToUser(invitedUser, project);
     }
 
-    private UserProject assignProjectToUser(User user, Project project){
+    public ProjectDto getCurrentProjectAsDto(Long projectId) {
+
+        Project project = projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
+
+        return projectMapper.toDto(project);
+    }
+
+    public Long deleteUserFromProject(Long userId, Long projectId) {
+        return userProjectRepository
+                .deleteByUserIdAndProjectId(userId, projectId);
+    }
+
+    private UserProject assignProjectToUser(User user, Project project) {
 
         UserProjectId userProjectId = new UserProjectId(user.getId(), project.getId());
 

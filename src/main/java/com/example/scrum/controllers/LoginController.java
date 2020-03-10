@@ -3,10 +3,12 @@ package com.example.scrum.controllers;
 import com.example.scrum.dto.UserPasswordRecoverDto;
 import com.example.scrum.entity.User;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
+import com.example.scrum.security.UserDetailsImpl;
 import com.example.scrum.service.EmailService;
 import com.example.scrum.service.UserService;
 import com.example.scrum.validators.PasswordRecoveryFormValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -83,8 +86,6 @@ public class LoginController {
 
     @GetMapping("/loginSuccess")
     public String loginSuccess() {
-
-
         return "redirect:/";
     }
 

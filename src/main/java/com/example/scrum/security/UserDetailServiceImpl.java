@@ -3,6 +3,7 @@ package com.example.scrum.security;
 import com.example.scrum.entity.User;
 import com.example.scrum.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,5 +21,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with nick " + username + " not found!"));
 
         return new UserDetailsImpl(user);
+    }
+
+    public static Long getCurrentUserId(){
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUserId();
     }
 }

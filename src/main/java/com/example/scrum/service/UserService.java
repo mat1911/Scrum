@@ -1,28 +1,31 @@
 package com.example.scrum.service;
 
+import com.example.scrum.dto.AssignedUserDto;
 import com.example.scrum.dto.UserRegisterDto;
-import com.example.scrum.entity.Role;
-import com.example.scrum.entity.User;
-import com.example.scrum.entity.VerificationToken;
+import com.example.scrum.entity.*;
 import com.example.scrum.exceptions.TokenException;
 import com.example.scrum.exceptions.UserNotFoundException;
 import com.example.scrum.mappers.UserMapper;
 import com.example.scrum.repository.RoleRepository;
 import com.example.scrum.repository.TokenRepository;
+import com.example.scrum.repository.UserProjectRepository;
 import com.example.scrum.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final RoleRepository roleRepository;
+    private final UserProjectRepository userProjectRepository;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final UserMapper userMapper;
@@ -89,6 +92,16 @@ public class UserService {
         user = addUserRole(user);
 
        return userRepository.save(user);
+    }
+
+    public List<AssignedUserDto> findAllUsersAssignedToProject(Long projectId){
+
+        return userProjectRepository
+                .findAllByProjectId(projectId)
+                .stream()
+                .map(UserProject::getUser)
+                .map(userMapper::toAssignedUserDto)
+                .collect(Collectors.toList());
     }
 
     public User saveRegisteredUser(User user){

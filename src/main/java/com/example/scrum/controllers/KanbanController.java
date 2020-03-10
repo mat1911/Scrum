@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -22,23 +23,10 @@ public class KanbanController {
 
     @GetMapping("/kanbanBoard")
     @Synchronized
-    public String kanban(Model model, HttpServletRequest request){
+    public String kanban(Model model, HttpSession session){
 
-        Long projectId = (Long) request.getSession().getAttribute("projectId");
+        Long projectId = (Long) session.getAttribute("projectId");
         List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(projectId);
-        model.addAttribute("stories", stories);
-
-        return "kanban/kanbanBoard";
-    }
-
-    @PostMapping("/kanbanBoard/{id}")
-    @Synchronized
-    public String getKanbanBoard(Model model, HttpServletRequest request, @PathVariable Long id){
-
-        request.getSession().setAttribute("projectId", id);
-        request.getSession().setAttribute("sprintId", sprintService.getCurrentSprint(id).getId());
-
-        List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(id);
         model.addAttribute("stories", stories);
 
         return "kanban/kanbanBoard";
@@ -47,10 +35,10 @@ public class KanbanController {
     @PostMapping("/updateStories")
     @ResponseBody
     @Synchronized
-    public void updateStories(@RequestBody StoriesDtoList stories, HttpServletRequest request){
+    public void updateStories(@RequestBody StoriesDtoList stories, HttpSession session){
 
-        Long projectId = (Long) request.getSession().getAttribute("projectId");
-        Long sprintId = (Long) request.getSession().getAttribute("sprintId");
+        Long projectId = (Long) session.getAttribute("projectId");
+        Long sprintId = sprintService.getCurrentSprint(projectId).getId();
 
         storyService.updateStories(stories, projectId, sprintId);
     }

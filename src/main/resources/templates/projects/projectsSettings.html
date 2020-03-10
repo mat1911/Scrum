@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects settings</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/js/projects/projectSettings.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-8 mt-5 offset-1">
+
+            <h1 class="text-center font-weight-bold">PROJECT SETTINGS</h1>
+
+            <form th:if="${session.productOwnerId} == ${#authentication.getPrincipal().getUserId()}" id="changeForm"
+                  method="post" th:action="@{/updateProject}" th:object="${currentProject}" class="needs-validation"
+                  novalidate>
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input id="name" type="text" class="form-control" th:field="*{name}">
+                    <div class="invalid-feedback">Please provide project name.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" rows="3" style="width: 100%" th:field="*{description}"
+                              id="description" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <button class="submitButton btn btn-dark" type="submit">Submit changes</button>
+                </div>
+
+            </form>
+
+            <br>
+            <div>
+                <br>
+                <h3 class="text-center font-weight-bold">Assigned users</h3>
+
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col"
+                                th:if="${param.projectId} == ${#authentication.getPrincipal().getUserId()}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${assignedUsers}">
+                            <th scope="row" th:text="${user.getId()}"></th>
+                            <td th:text="${user.getFirstName()}"></td>
+                            <td th:text="${user.getLastName()}"></td>
+                            <td th:if="${session.productOwnerId} == ${#authentication.getPrincipal().getUserId()}"
+                                th:unless="${user.getId()} == ${#authentication.getPrincipal().getUserId()}">
+
+                                <a href="#" data-toggle="modal" data-target="#confirm-delete"
+                                        th:attr="data-href='/deleteUser?id=' + ${user.getId()}" style="color: inherit;">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div th:replace="projects/projectsSettingsPopUps"></div>
+
+</div>
+</body>
+</html>

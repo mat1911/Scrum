@@ -34,6 +34,9 @@ public class User extends AbstractEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Project> ownedProjects = new HashSet<>();
+
     @OneToMany(mappedBy = "assignedTo", fetch = FetchType.LAZY)
     private Set<Story> stories = new HashSet<>();
 
@@ -42,9 +45,6 @@ public class User extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private VerificationToken token;
-
-    /*    @ManyToOne(fetch = FetchType.EAGER)
-    private Project lastOpenedProject;*/
 
     public String getName() {
         return firstName + " " + lastName + " (" + username + ")";

@@ -2,10 +2,7 @@ package com.example.scrum.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +19,10 @@ public class Project extends AbstractEntity {
     private String name;
     @Column(length = 500)
     private String description;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @OneToMany(mappedBy = "project")
     private Set<UserProject> userProjects = new HashSet<>();
