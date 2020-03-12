@@ -41,13 +41,13 @@
                         </div>
 
                         <div class="btn-block card-footer bg-dark align-content-center">
-                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                            <a th:unless="${story.getAssignedUserDto().getId()}" role="button"
                                class="btn btn-dark w-100 assignStoryButton"
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserId()}"
-                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                            <h6 th:if="${story.getAssignedUserDto().getId()}"
+                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
                                 class='text-white text-center'></h6>
                         </div>
                     </div>
@@ -68,15 +68,14 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
-                        <div class=" card-footer bg-dark align-content-center">
-
-                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                        <div class="btn-block card-footer bg-dark align-content-center">
+                            <a th:unless="${story.getAssignedUserDto().getId()}" role="button"
                                class="btn btn-dark w-100 assignStoryButton"
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserId()}"
-                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                            <h6 th:if="${story.getAssignedUserDto().getId()}"
+                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
                                 class='text-white text-center'></h6>
                         </div>
                     </div>
@@ -98,13 +97,13 @@
                         </div>
 
                         <div class="btn-block card-footer bg-dark align-content-center">
-                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                            <a th:unless="${story.getAssignedUserDto().getId()}" role="button"
                                class="btn btn-dark w-100 assignStoryButton"
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserId()}"
-                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                            <h6 th:if="${story.getAssignedUserDto().getId()}"
+                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
                                 class='text-white text-center'></h6>
                         </div>
                     </div>
@@ -125,16 +124,15 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
-                        <div class="btn-block card-footer bg-dark text-center align-content-center">
-                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                        <div class="btn-block card-footer bg-dark align-content-center">
+                            <a th:unless="${story.getAssignedUserDto().getId()}" role="button"
                                class="btn btn-dark w-100 assignStoryButton"
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserId()}"
-                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                            <h6 th:if="${story.getAssignedUserDto().getId()}"
+                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
                                 class='text-white text-center'></h6>
-
                         </div>
                     </div>
                 </div>
@@ -146,53 +144,6 @@
 </div>
 </body>
 
-<div th:replace="kanban/dragAndDropScripts"></div>
-
-<!--<script th:inline="javascript">
-
-    /*when user click the button send project id*/
-    $(document).ready(function () {
-        $(".assignStoryButton").click(function () {
-                var storyId = $(this)
-                    .parent()
-                    .parent()
-                    .attr('id');
-
-                assignUserToStory(storyId);
-                changeView($(this), storyId);
-            }
-        )
-    });
-
-
-    function assignUserToStory(storyId) {
-        $.ajax({
-            url: "http://localhost:8080/assignUserToStory?storyId=" + storyId,
-            type: 'POST'
-        });
-    }
-
-    function changeView(assignStoryButton, storyId) {
-        /*<![CDATA[*/
-            var assignedUser = [[${assignedUser}]];
-            var stories = /*[[${stories}]]*/[];
-            var userDetails = assignedUser.firstName + " " + assignedUser.lastName;
-            assignStoryButton.replaceWith("<h6 class='text-white text-center'>" + userDetails + "</h6>");
-
-
-        for (var i = 0; i < stories.length; i++) {
-            if(Number(stories[i].id) === Number(storyId)){
-                stories[i].assignedUserId = assignedUser.id;
-                console.log('wchodze');
-                console.log(stories[i]);
-
-            }
-
-
-
-        }
-        /*]]>*/
-    }
-</script>-->
+<div th:replace="kanban/kanbanBoardScripts"></div>
 
 </html>

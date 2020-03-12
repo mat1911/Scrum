@@ -1,5 +1,6 @@
 package com.example.scrum.mappers;
 
+import com.example.scrum.dto.AssignedUserDto;
 import com.example.scrum.dto.StoryDto;
 import com.example.scrum.entity.Story;
 import com.example.scrum.entity.User;
@@ -16,22 +17,28 @@ public abstract class StoryMapper {
     @Autowired
     private UserService userService;
 
-    @Mapping(source = "assignedUserId", target = "assignedUser", qualifiedByName = "toAssignedUser")
+    @Autowired
+    private UserMapper userMapper;
+
+    @Mapping(source = "assignedUserDto", target = "assignedUser", qualifiedByName = "toAssignedUser")
     public abstract Story toEntity(StoryDto storyDto);
 
     @Mappings({
-            @Mapping(source = "assignedUser", target = "assignedUserId", qualifiedByName = "toAssignedUserId")
+            @Mapping(source = "assignedUser", target = "assignedUserDto", qualifiedByName = "toAssignedUserDto")
     })
     public abstract StoryDto toDto(Story story);
 
-    @Named("toAssignedUserId")
-     public Long toAssignedUserId(User assignedUser){
-        return assignedUser != null ? assignedUser.getId() : null;
+    @Named("toAssignedUserDto")
+     public AssignedUserDto toAssignedUserDto(User assignedUser){
+
+        AssignedUserDto user = userMapper.toAssignedUserDto(assignedUser);
+
+        return user == null ? new AssignedUserDto() : user;
     }
 
     @Named("toAssignedUser")
-    public  User toAssignedUser(Long assignedUserId){
-        return assignedUserId != null ? userService.findById(assignedUserId) : null;
+    public  User toAssignedUser(AssignedUserDto assignedUserDto){
+        return (assignedUserDto != null && assignedUserDto.getId() != null) ? userService.findById(assignedUserDto.getId()) : null;
     }
 
 }
