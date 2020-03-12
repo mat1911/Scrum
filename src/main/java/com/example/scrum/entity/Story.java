@@ -45,5 +45,5 @@ public class Story extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_to_user_id")
-    private User assignedTo;
+    private User assignedUser;
 }

@@ -25,11 +25,11 @@
 
             <div class="row" style="height: 100vh">
 
-                <div id = "to_do" class="col-3 droppable bg-danger">
+                <div id="to_do" class="col-3 droppable bg-danger">
 
                     <h4 class="mt-2 text-white font-weight-bold text-center">TO DO</h4>
 
-                    <div th:id="${story.getId()}" class="card draggable" th:each="story : ${stories}"
+                    <div th:id="${story.getId()}" class="card draggable border-0" th:each="story : ${stories}"
                          th:if="${story.getStatus().getName() == 'TO_DO'}">
 
                         <div class="card-body">
@@ -40,14 +40,24 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
+                        <div class="btn-block card-footer bg-dark align-content-center">
+                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                               class="btn btn-dark w-100 assignStoryButton"
+                               href="#assignStoryButton">Assign this
+                                story</a>
+
+                            <h6 th:if="${story.getAssignedUserId()}"
+                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                                class='text-white text-center'></h6>
+                        </div>
                     </div>
                 </div>
 
-                <div id = "doing" class="col-3 droppable bg-info">
+                <div id="doing" class="col-3 droppable bg-info">
 
                     <h4 class="mt-2 text-white font-weight-bold text-center">DOING</h4>
 
-                    <div th:id="${story.getId()}" class="card draggable" th:each="story : ${stories}"
+                    <div th:id="${story.getId()}" class="card draggable border-0" th:each="story : ${stories}"
                          th:if="${story.getStatus().getName() == 'DOING'}">
 
                         <div class="card-body">
@@ -58,15 +68,25 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
-                    </div>
+                        <div class=" card-footer bg-dark align-content-center">
 
+                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                               class="btn btn-dark w-100 assignStoryButton"
+                               href="#assignStoryButton">Assign this
+                                story</a>
+
+                            <h6 th:if="${story.getAssignedUserId()}"
+                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                                class='text-white text-center'></h6>
+                        </div>
+                    </div>
                 </div>
 
-                <div id = "verify" class="col-3 droppable bg-secondary">
+                <div id="verify" class="col-3 droppable bg-secondary">
 
                     <h4 class="mt-2 text-white font-weight-bold text-center">VERIFY</h4>
 
-                    <div th:id="${story.getId()}" class="card draggable" th:each="story : ${stories}"
+                    <div th:id="${story.getId()}" class="card draggable border-0" th:each="story : ${stories}"
                          th:if="${story.getStatus().getName() == 'VERIFY'}">
 
                         <div class="card-body">
@@ -77,15 +97,24 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
-                    </div>
+                        <div class="btn-block card-footer bg-dark align-content-center">
+                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                               class="btn btn-dark w-100 assignStoryButton"
+                               href="#assignStoryButton">Assign this
+                                story</a>
 
+                            <h6 th:if="${story.getAssignedUserId()}"
+                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                                class='text-white text-center'></h6>
+                        </div>
+                    </div>
                 </div>
 
-                <div id = "done" class="col-3 droppable bg-primary">
+                <div id="done" class="col-3 droppable bg-primary">
 
                     <h4 class="mt-2 text-white font-weight-bold text-center">DONE</h4>
 
-                    <div th:id="${story.getId()}" class="card draggable" th:each="story : ${stories}"
+                    <div th:id="${story.getId()}" class="card draggable border-0" th:each="story : ${stories}"
                          th:if="${story.getStatus().getName() == 'DONE'}">
 
                         <div class="card-body">
@@ -96,13 +125,20 @@
                             <p class="card-text" th:text="${story.getNumber()}"></p>
                         </div>
 
+                        <div class="btn-block card-footer bg-dark text-center align-content-center">
+                            <a th:unless="${story.getAssignedUserId()}" role="button"
+                               class="btn btn-dark w-100 assignStoryButton"
+                               href="#assignStoryButton">Assign this
+                                story</a>
+
+                            <h6 th:if="${story.getAssignedUserId()}"
+                                th:text="${assignedUser.getFirstName()} + ' ' + ${assignedUser.getLastName()}"
+                                class='text-white text-center'></h6>
+
+                        </div>
                     </div>
-
                 </div>
-
             </div>
-
-
         </div>
 
     </div>
@@ -111,5 +147,52 @@
 </body>
 
 <div th:replace="kanban/dragAndDropScripts"></div>
+
+<!--<script th:inline="javascript">
+
+    /*when user click the button send project id*/
+    $(document).ready(function () {
+        $(".assignStoryButton").click(function () {
+                var storyId = $(this)
+                    .parent()
+                    .parent()
+                    .attr('id');
+
+                assignUserToStory(storyId);
+                changeView($(this), storyId);
+            }
+        )
+    });
+
+
+    function assignUserToStory(storyId) {
+        $.ajax({
+            url: "http://localhost:8080/assignUserToStory?storyId=" + storyId,
+            type: 'POST'
+        });
+    }
+
+    function changeView(assignStoryButton, storyId) {
+        /*<![CDATA[*/
+            var assignedUser = [[${assignedUser}]];
+            var stories = /*[[${stories}]]*/[];
+            var userDetails = assignedUser.firstName + " " + assignedUser.lastName;
+            assignStoryButton.replaceWith("<h6 class='text-white text-center'>" + userDetails + "</h6>");
+
+
+        for (var i = 0; i < stories.length; i++) {
+            if(Number(stories[i].id) === Number(storyId)){
+                stories[i].assignedUserId = assignedUser.id;
+                console.log('wchodze');
+                console.log(stories[i]);
+
+            }
+
+
+
+        }
+        /*]]>*/
+    }
+</script>-->
 
 </html>

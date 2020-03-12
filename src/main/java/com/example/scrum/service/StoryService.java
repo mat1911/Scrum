@@ -2,15 +2,20 @@ package com.example.scrum.service;
 
 import com.example.scrum.dto.StoriesDtoList;
 import com.example.scrum.dto.StoryDto;
+import com.example.scrum.entity.Story;
+import com.example.scrum.entity.User;
 import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
 import com.example.scrum.exceptions.SprintNotFoundException;
+import com.example.scrum.exceptions.StoryNotFoundException;
 import com.example.scrum.mappers.StoryMapper;
 import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.SprintRepository;
 import com.example.scrum.repository.StatusRepository;
 import com.example.scrum.repository.StoryRepository;
+import com.example.scrum.security.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,7 +30,22 @@ public class StoryService {
     private final SprintRepository sprintRepository;
     private final StatusRepository statusRepository;
     private final ProjectRepository projectRepository;
+    private final UserService userService;
     private final StoryMapper storyMapper;
+
+    public Story assignCurrentUserToStory(Long storyId){
+
+        Story story = storyRepository
+                .findById(storyId)
+                .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
+
+        User currentUser = userService.findById(UserDetailServiceImpl.getCurrentUserId());
+
+        story.setAssignedUser(currentUser);
+        storyRepository.save(story);
+
+        return story;
+    }
 
     public List<StoryDto> getStoriesFromCurrentSprint(Long projectId) {
 

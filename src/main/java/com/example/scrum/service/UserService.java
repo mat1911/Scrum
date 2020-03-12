@@ -11,6 +11,7 @@ import com.example.scrum.repository.TokenRepository;
 import com.example.scrum.repository.UserProjectRepository;
 import com.example.scrum.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Named;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,16 @@ public class UserService {
                 .map(UserProject::getUser)
                 .map(userMapper::toAssignedUserDto)
                 .collect(Collectors.toList());
+    }
+
+    public AssignedUserDto findAssignedUserById(Long userId){
+
+        User user = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User object is null!"));
+
+        return userMapper.toAssignedUserDto(user);
+
     }
 
     public User saveRegisteredUser(User user){

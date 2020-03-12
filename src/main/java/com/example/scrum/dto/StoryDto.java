@@ -18,5 +18,6 @@ public class StoryDto {
     private Integer storyPoints;
     private String acceptanceCriteria;
     private Status status;
+    private Long assignedUserId;
 
 }
