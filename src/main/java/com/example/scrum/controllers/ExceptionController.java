@@ -3,6 +3,7 @@ package com.example.scrum.controllers;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
 
 import com.example.scrum.exceptions.SprintNotFoundException;
+import com.example.scrum.exceptions.StoryNotFoundException;
 import com.example.scrum.exceptions.TokenException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,6 +32,14 @@ public class ExceptionController {
 
         model.addAttribute("messageHeader", "PROBLEM WITH TOKEN!");
         model.addAttribute("message", "Given token expired or is not correct. ");
+
+        return "infoPages/informationPage";
+    }
+
+    @ExceptionHandler(StoryNotFoundException.class)
+    public String storyNotFoundHandler(StoryNotFoundException e, Model model) {
+        model.addAttribute("messageHeader", "STORY IS NOT FOUND!");
+        model.addAttribute("message", e.getMessage());
 
         return "infoPages/informationPage";
     }

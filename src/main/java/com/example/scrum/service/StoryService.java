@@ -2,9 +2,11 @@ package com.example.scrum.service;
 
 import com.example.scrum.dto.StoriesDtoList;
 import com.example.scrum.dto.StoryDto;
+import com.example.scrum.entity.Story;
 import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
 import com.example.scrum.exceptions.SprintNotFoundException;
+import com.example.scrum.exceptions.StoryNotFoundException;
 import com.example.scrum.mappers.StoryMapper;
 import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.SprintRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,29 @@ public class StoryService {
     private final StatusRepository statusRepository;
     private final ProjectRepository projectRepository;
     private final StoryMapper storyMapper;
+
+    public void delete(Long number, Long projectId) {
+        Optional<Story> story = storyRepository
+                .findAllByProject_Id(projectId)
+                .stream()
+                .filter(str -> str.getNumber().equals(number))
+                .findFirst();
+        if(story.isPresent())
+            storyRepository.delete(story.get());
+        else
+            throw new StoryNotFoundException("There is no story associated with such story number and project id!");
+    }
+
+    public List<StoryDto> getStoriesByProjectId(Long projectId) {
+        if(projectId == null) {
+            throw new ProjectNotSelectedException("Project is not selected!");
+        }
+
+        return storyRepository
+                .findAllByProject_Id(projectId)
+                .stream().map(storyMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     public List<StoryDto> getStoriesFromCurrentSprint(Long projectId) {
 
