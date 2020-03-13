@@ -72,17 +72,16 @@
     //====================================ASSIGNING USER TO STORY (BY PRESSING BUTTON)=============================================
     /*when user click the button 'Assign story' then send project id*/
     $(document).ready(function () {
-        $(".assignStoryButton").click(function () {
-                var storyId = $(this)
-                    .parent()
-                    .parent()
-                    .attr('id');
+        $("#statusContainer").on('click', '.assignStoryButton', function () {
+            var storyId = $(this)
+                .parent()
+                .parent()
+                .attr('id');
 
-                assignUserToStory(storyId);
-                changeView($(this));
-                updateAssignedUserId(storyId);
-            }
-        )
+            assignUserToStory(storyId);
+            changeViewAssign($(this));
+            updateAssignedUserId(storyId);
+        });
     });
 
 
@@ -95,11 +94,12 @@
     }
 
     /*Replace button 'Assign story' with assigned user details*/
-    function changeView(assignStoryButton) {
+    function changeViewAssign(assignStoryButton) {
         /*<![CDATA[*/
             var assignedUser = [[${assignedUser}]];
             var userDetails = assignedUser.firstName + " " + assignedUser.lastName;
-            assignStoryButton.replaceWith("<h6 class='text-white text-center'>" + userDetails + "</h6>");
+            assignStoryButton.replaceWith("<div><h6 class='text-white text-center d-inline-block'>" + userDetails + "</h6>" +
+                "<a type='button' class='d-inline-block close text-white extractUserButton'>&times;</a></div>");
         /*]]>*/
     }
 
@@ -116,4 +116,35 @@
     }
 
 
+    //====================================EXTRACT USER FROM STORY (BY PRESSING BUTTON)=============================================
+
+    $(document).ready(function () {
+        $("#statusContainer").on('click', '.extractUserButton', function () {
+                var storyId = $(this)
+                    .parent()
+                    .parent()
+                    .parent()
+                    .attr('id');
+
+                extractUserFromStory(storyId);
+                changeViewExtract($(this));
+                updateAssignedUserId(null);
+            }
+        )
+    });
+
+    /*Send data to server (which story do not have any more assigned user)*/
+    function extractUserFromStory(storyId){
+        $.ajax({
+            url: "http://localhost:8080/extractUserFromStory?storyId=" + storyId,
+            type: 'POST'
+        });
+    }
+
+    /*Change replace div with user details with button to assign user to story */
+    function changeViewExtract(extractUserButton) {
+        var assignedUserDataDiv = extractUserButton.parent();
+        assignedUserDataDiv.replaceWith("<a role='button' class='btn btn-dark w-100 assignStoryButton' " +
+            "href='#assignStoryButton'>Assign this story</a>");
+    }
 </script>

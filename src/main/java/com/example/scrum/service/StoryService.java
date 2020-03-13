@@ -17,12 +17,14 @@ import com.example.scrum.security.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class StoryService {
 
@@ -33,6 +35,16 @@ public class StoryService {
     private final UserService userService;
     private final StoryMapper storyMapper;
 
+    public Story extractUserFromStory(Long storyId){
+
+        Story story = storyRepository
+                .findById(storyId)
+                .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
+
+        story.setAssignedUser(null);
+        return story;
+    }
+
     public Story assignCurrentUserToStory(Long storyId){
 
         Story story = storyRepository
@@ -40,10 +52,7 @@ public class StoryService {
                 .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
 
         User currentUser = userService.findById(UserDetailServiceImpl.getCurrentUserId());
-
         story.setAssignedUser(currentUser);
-        storyRepository.save(story);
-
         return story;
     }
 

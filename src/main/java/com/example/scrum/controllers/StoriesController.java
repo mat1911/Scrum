@@ -19,4 +19,10 @@ public class StoriesController {
         storyService.assignCurrentUserToStory(storyId);
     }
 
+    @ResponseBody
+    @PostMapping("/extractUserFromStory")
+    public void extractUserFromStory(@RequestParam("storyId") Long storyId){
+        storyService.extractUserFromStory(storyId);
+    }
+
 }

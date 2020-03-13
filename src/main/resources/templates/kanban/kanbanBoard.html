@@ -23,7 +23,7 @@
 
         <div class="col-10">
 
-            <div class="row" style="height: 100vh">
+            <div id="statusContainer" class="row" style="height: 100vh">
 
                 <div id="to_do" class="col-3 droppable bg-danger">
 
@@ -46,9 +46,14 @@
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserDto().getId()}"
-                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
-                                class='text-white text-center'></h6>
+                            <div th:if="${story.getAssignedUserDto().getId()}">
+                                <h6 th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
+                                    class='d-inline-block text-white text-center'></h6>
+                                <a th:if="${story.getAssignedUserDto().getId()} == ${assignedUser.getId()}"
+                                   type="button" class="d-inline-block close text-white extractUserButton" data-dismiss="modal">
+                                    &times;
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -74,9 +79,15 @@
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserDto().getId()}"
-                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
-                                class='text-white text-center'></h6>
+                            <div th:if="${story.getAssignedUserDto().getId()}">
+                                <h6 th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
+                                    class='d-inline-block text-white text-center'></h6>
+
+                                <a th:if="${story.getAssignedUserDto().getId()} == ${assignedUser.getId()}"
+                                        type="button" class="d-inline-block close text-white extractUserButton" data-dismiss="modal">
+                                    &times;
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,9 +113,14 @@
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserDto().getId()}"
-                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
-                                class='text-white text-center'></h6>
+                            <div th:if="${story.getAssignedUserDto().getId()}">
+                                <h6 th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
+                                    class='d-inline-block text-white text-center'></h6>
+                                <a th:if="${story.getAssignedUserDto().getId()} == ${assignedUser.getId()}"
+                                   type="button" class="d-inline-block close text-white extractUserButton" data-dismiss="modal">
+                                    &times;
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,9 +146,14 @@
                                href="#assignStoryButton">Assign this
                                 story</a>
 
-                            <h6 th:if="${story.getAssignedUserDto().getId()}"
-                                th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
-                                class='text-white text-center'></h6>
+                            <div  th:if="${story.getAssignedUserDto().getId()}">
+                                <h6 th:text="${story.getAssignedUserDto().getFirstName()} + ' ' + ${story.getAssignedUserDto().getLastName()}"
+                                    class='d-inline-block text-white text-center'></h6>
+                                <a th:if="${story.getAssignedUserDto().getId()} == ${assignedUser.getId()}"
+                                   type="button" class="d-inline-block close text-white extractUserButton" data-dismiss="modal">
+                                    &times;
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
