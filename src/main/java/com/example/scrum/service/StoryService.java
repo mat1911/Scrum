@@ -3,6 +3,7 @@ package com.example.scrum.service;
 import com.example.scrum.dto.StoriesDtoList;
 import com.example.scrum.dto.StoryDto;
 import com.example.scrum.entity.Story;
+import com.example.scrum.entity.User;
 import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.exceptions.ProjectNotSelectedException;
 import com.example.scrum.exceptions.SprintNotFoundException;

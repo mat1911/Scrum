@@ -25,7 +25,7 @@
             <form th:if="${session.productOwnerId} == ${#authentication.getPrincipal().getUserId()}" id="changeForm"
                   method="post" th:action="@{/updateProject}" th:object="${currentProject}" class="needs-validation"
                   novalidate>
-b
+
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input id="name" type="text" class="form-control" th:field="*{name}">
@@ -79,9 +79,14 @@ b
                 </div>
             </div>
 
-        </div>
+            <br/><br/><br/>
 
+            <div th:if="${session.productOwnerId} == ${#authentication.getPrincipal().getUserId()}" class="row">
+                <a class="w-100 btn btn-danger" href="#" data-toggle="modal" data-target="#confirm-archive">Archive project</a>
+            </div>
+        </div>
     </div>
+
 
     <div th:replace="projects/projectsSettingsPopUps"></div>
 

@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,12 +29,9 @@ public class KanbanController {
     public String kanban(Model model, HttpSession session){
 
         Long projectId = (Long) session.getAttribute("projectId");
-        List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(projectId);
-
-
 
         model.addAttribute("statuses", projectService.findAllStatuses());
-        model.addAttribute("stories", stories);
+        model.addAttribute("stories", storyService.getStoriesFromCurrentSprint(projectId));
         model.addAttribute("assignedUser", userService.findAssignedUserById(UserDetailServiceImpl.getCurrentUserId()));
 
         return "/kanban/kanbanBoard";

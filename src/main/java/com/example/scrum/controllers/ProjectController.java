@@ -4,12 +4,10 @@ import com.example.scrum.dto.ProjectDto;
 import com.example.scrum.dto.UserInvitationDto;
 import com.example.scrum.entity.User;
 import com.example.scrum.security.UserDetailServiceImpl;
-import com.example.scrum.security.UserDetailsImpl;
 import com.example.scrum.service.EmailService;
 import com.example.scrum.service.ProjectService;
 import com.example.scrum.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +28,7 @@ public class ProjectController {
     public String getProjects(Model model){
 
         Long userId = UserDetailServiceImpl.getCurrentUserId();
-        List<ProjectDto> projects = projectService.getAllUserProjects(userId);
+        List<ProjectDto> projects = projectService.getAllActiveUserProjects(userId);
         model.addAttribute("projects", projects);
         model.addAttribute("userInvitation", new UserInvitationDto());
 
@@ -102,12 +100,28 @@ public class ProjectController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUserFromProject(HttpSession session, Model model, @RequestParam("id") Long id){
+    public String deleteUserFromProject(HttpSession session, @RequestParam("id") Long id){
 
         Long projectId = (Long) session.getAttribute("projectId");
         projectService.deleteUserFromProject(id, projectId);
 
         return "redirect:/projectSettings?projectId=" + projectId;
+    }
+
+    @PostMapping("/archiveProject")
+    public String archiveProject(HttpSession session){
+        Long projectId = (Long) session.getAttribute("projectId");
+        projectService.setProjectStatus(projectId, true);
+        return "redirect:/projects";
+    }
+
+    @PostMapping("/recoverProject")
+    public String recoverProject(@RequestParam("id") Long id){
+
+        System.out.println("wchodze");
+
+        projectService.setProjectStatus(id, false);
+        return "redirect:/projects";
     }
 
 }

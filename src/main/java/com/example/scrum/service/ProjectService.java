@@ -36,11 +36,23 @@ public class ProjectService {
                 .getOwner();
     }
 
-    public List<ProjectDto> getAllUserProjects(Long userId) {
+    public List<ProjectDto> getAllActiveUserProjects(Long userId) {
 
         return userProjectRepository
                 .findAllByUserId(userId)
                 .stream()
+                .filter(userProject -> !userProject.getProject().getIsArchived())
+                .map(UserProject::getProject)
+                .map(projectMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProjectDto> getAllArchivedUserProjects(Long userId) {
+
+        return userProjectRepository
+                .findAllByUserId(userId)
+                .stream()
+                .filter(userProject -> userProject.getProject().getIsArchived())
                 .map(UserProject::getProject)
                 .map(projectMapper::toDto)
                 .collect(Collectors.toList());
@@ -89,6 +101,17 @@ public class ProjectService {
                 .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
 
         return projectMapper.toDto(project);
+    }
+
+    public Project setProjectStatus(Long projectId, boolean isArchived){
+
+        Project project = projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
+
+        project.setIsArchived(isArchived);
+
+        return project;
     }
 
     public Long deleteUserFromProject(Long userId, Long projectId) {

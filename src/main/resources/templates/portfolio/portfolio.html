@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/js/portfolio/portfolio.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-10 mt-5 text-center">
+
+            <h2 class="font-weight-bold">YOUR ARCHIVED PROJECTS</h2>
+
+            <br/><br/>
+
+            <ul th:unless="${projects.isEmpty()}" th:each="project : ${projects}" class="list-group">
+                <li class="list-group-item">
+                    <div class="d-flex  justify-content-between">
+                        <h3 class="text-left font-weight-bold flex-grow-1" th:text="${project.getName()}"></h3>
+                        <a href="#" th:attr="data-href='/recoverProject?id=' + ${project.getId()}"
+                           class="btn btn-primary mr-1" data-toggle="modal" data-target="#confirm-recover"
+                           style="width: 10%">Recover</a>
+                        <a href="#" class="btn btn-dark" style="width: 10%">Details</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul th:if="${projects.isEmpty()}" class="list-group">
+                <li class="list-group-item">
+                    <h1 class="text-muted">YOU DO NOT HAVE ANY ARCHIVED PROJECT</h1>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div th:replace="portfolio/portfolioPopUps"></div>
+
+</div>
+</body>
+</html>

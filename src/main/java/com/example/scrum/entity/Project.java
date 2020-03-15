@@ -19,6 +19,8 @@ public class Project extends AbstractEntity {
     private String name;
     @Column(length = 500)
     private String description;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isArchived;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "owner_id")
