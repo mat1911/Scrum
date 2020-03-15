@@ -19,7 +19,6 @@
 
     $(".droppable").droppable({
         drop: function (event, ui) {
-
             /*Appending dragged div to droppable div*/
             $(this)
                 .append(ui.helper.css({
@@ -29,7 +28,6 @@
                     transform: "rotate(0deg)"
                 }));
 
-           // var stories = updateStatusOfAllStories();
             updateStatusOfAllStories();
             sendStoriesToServer(stories);
         }
@@ -38,8 +36,6 @@
     /*Updating status of stories and sending result*/
     function updateStatusOfAllStories() {
         /*<![CDATA[*/
-         //   var stories = /*[[${stories}]]*/[];
-
             for (var i = 0; i < stories.length; i++) {
 
                 var story = document.getElementById(stories[i].id);
@@ -96,22 +92,22 @@
     /*Replace button 'Assign story' with assigned user details*/
     function changeViewAssign(assignStoryButton) {
         /*<![CDATA[*/
-            var assignedUser = [[${assignedUser}]];
-            var userDetails = assignedUser.firstName + " " + assignedUser.lastName;
-            assignStoryButton.replaceWith("<div><h6 class='text-white text-center d-inline-block'>" + userDetails + "</h6>" +
-                "<a type='button' class='d-inline-block close text-white extractUserButton'>&times;</a></div>");
+        var assignedUser = [[${assignedUser}]];
+        var userDetails = assignedUser.firstName + " " + assignedUser.lastName;
+        assignStoryButton.replaceWith("<div><h6 class='text-white text-center d-inline-block'>" + userDetails + "</h6>" +
+            "<a type='button' class='d-inline-block close text-white extractUserButton'>&times;</a></div>");
         /*]]>*/
     }
 
     function updateAssignedUserId(storyId) {
         /*<![CDATA[*/
-            var assignedUser = [[${assignedUser}]];
+        var assignedUser = [[${assignedUser}]];
 
-            for (var i = 0; i < stories.length; i++) {
-                if (Number(stories[i].id) === Number(storyId)) {
-                    stories[i].assignedUserDto.id = assignedUser.id;
-                }
+        for (var i = 0; i < stories.length; i++) {
+            if (Number(stories[i].id) === Number(storyId)) {
+                stories[i].assignedUserDto.id = assignedUser.id;
             }
+        }
         /*]]>*/
     }
 
@@ -134,7 +130,7 @@
     });
 
     /*Send data to server (which story do not have any more assigned user)*/
-    function extractUserFromStory(storyId){
+    function extractUserFromStory(storyId) {
         $.ajax({
             url: "http://localhost:8080/extractUserFromStory?storyId=" + storyId,
             type: 'POST'
@@ -147,4 +143,51 @@
         assignedUserDataDiv.replaceWith("<a role='button' class='btn btn-dark w-100 assignStoryButton' " +
             "href='#assignStoryButton'>Assign this story</a>");
     }
+
+
+    //====================================COLOR OF COLUMNS BACKGROUNDS=============================================
+    $(document).ready(function () {
+        /*<![CDATA[*/
+        var statuses = /*[[${statuses}]]*/['TO_DO', 'DOING', 'VERIFY', 'DONE'];
+        var colors = ['bg-danger', 'bg-info', 'bg-secondary', 'bg-primary'];
+        var dot = '#';
+        for (var i = 0; i < statuses.length; i++) {
+            statuses[i] = dot.concat(statuses[i].name);
+            $(statuses[i].toString()).each(function () {
+                $(this).addClass(colors[i]);
+            });
+        }
+        /*]]>*/
+    });
+
+
+    //====================================FILTERING OPTIONS=============================================
+    $('#userStoriesCheck').change(function () {
+        if ($(this).is(':checked')) {
+            hideOtherStories();
+        } else {
+            showAllStories();
+        }
+    });
+
+    function hideOtherStories() {
+
+        var assignedUser = [[${assignedUser}]];
+
+        for (const story of stories) {
+            if (story.assignedUserDto.id !== assignedUser.id && story.assignedUserDto.id !== null) {
+
+                var divToHideId = '#'.concat(story.id);
+                $(divToHideId).hide();
+            }
+        }
+    }
+
+    function showAllStories() {
+        for (const story of stories) {
+            var divToShow = '#'.concat(story.id);
+            $(divToShow).show();
+        }
+    }
+
 </script>

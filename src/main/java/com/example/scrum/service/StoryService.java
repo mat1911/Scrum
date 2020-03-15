@@ -51,6 +51,10 @@ public class StoryService {
                 .findById(storyId)
                 .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
 
+        if(story.getAssignedUser() != null){
+            return story;
+        }
+
         User currentUser = userService.findById(UserDetailServiceImpl.getCurrentUserId());
         story.setAssignedUser(currentUser);
         return story;

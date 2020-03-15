@@ -1,9 +1,9 @@
 package com.example.scrum.controllers;
 
-import com.example.scrum.dto.AssignedUserDto;
 import com.example.scrum.dto.StoriesDtoList;
 import com.example.scrum.dto.StoryDto;
 import com.example.scrum.security.UserDetailServiceImpl;
+import com.example.scrum.service.ProjectService;
 import com.example.scrum.service.SprintService;
 import com.example.scrum.service.StoryService;
 import com.example.scrum.service.UserService;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -23,6 +22,7 @@ public class KanbanController {
 
     private final StoryService storyService;
     private final SprintService sprintService;
+    private final ProjectService projectService;
     private final UserService userService;
 
     @GetMapping("/kanbanBoard")
@@ -32,10 +32,13 @@ public class KanbanController {
         Long projectId = (Long) session.getAttribute("projectId");
         List<StoryDto> stories = storyService.getStoriesFromCurrentSprint(projectId);
 
+
+
+        model.addAttribute("statuses", projectService.findAllStatuses());
         model.addAttribute("stories", stories);
         model.addAttribute("assignedUser", userService.findAssignedUserById(UserDetailServiceImpl.getCurrentUserId()));
 
-        return "kanban/kanbanBoard";
+        return "/kanban/kanbanBoard";
     }
 
     @PostMapping("/updateStories")

@@ -1,13 +1,11 @@
 package com.example.scrum.service;
 
 import com.example.scrum.dto.ProjectDto;
-import com.example.scrum.entity.Project;
-import com.example.scrum.entity.User;
-import com.example.scrum.entity.UserProject;
-import com.example.scrum.entity.UserProjectId;
+import com.example.scrum.entity.*;
 import com.example.scrum.exceptions.ObjectNotFoundException;
 import com.example.scrum.mappers.ProjectMapper;
 import com.example.scrum.repository.ProjectRepository;
+import com.example.scrum.repository.StatusRepository;
 import com.example.scrum.repository.UserProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +21,13 @@ public class ProjectService {
 
     private final UserProjectRepository userProjectRepository;
     private final ProjectRepository projectRepository;
+    private final StatusRepository statusRepository;
     private final UserService userService;
     private final ProjectMapper projectMapper;
 
+    public List<Status> findAllStatuses(){
+        return statusRepository.findAll();
+    }
 
     public User findProjectOwner(Long projectId){
         return projectRepository
