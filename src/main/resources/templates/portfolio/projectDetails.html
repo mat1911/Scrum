@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body class="vh-100">
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-10 mb-5 mt-5 text-center">
+
+            <h2 class="font-weight-bold" th:text="${project.getName()}"></h2>
+
+            <br><br>
+            <div th:unless="${project.getDescription().isEmpty()}">
+                <ul class="list-group">
+                    <li class="list-group-item text-left">
+                        <div class="d-flex flex-row">
+                            <p class="text-left font-weight-bold mr-1"
+                               style="font-size: 20px" th:text="'Description: '"></p>
+                            <p class="text-left" style="font-size: 20px" th:text="${project.getDescription()}"></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <br/><br/>
+
+            <div th:each="sprint : ${sprints}">
+                <br><br>
+                <h3 class="font-weight-bold"
+                    th:text="${sprint.getTitle()} + ' from: ' + ${sprint.getBeginDate()} + ' to ' + ${sprint.getEndDate()}"></h3>
+
+                <br><br>
+                <div th:unless="${sprint.getStories().isEmpty()}">
+                    <h4>Stories</h4>
+                    <ul th:each="story : ${sprint.getStories()}" class="list-group">
+                        <li class="list-group-item text-left">
+                            <div class="d-flex flex-row">
+                                <h6 class="font-weight-bold mr-1">Title: </h6>
+                                <h6 th:text="' ' + ${story.getTitle()}"></h6>
+                            </div>
+
+                            <div class="d-flex flex-row">
+                                <h6 class="font-weight-bold mr-1">Description: </h6>
+                                <h6 th:text="' ' + ${story.getDescription()}"></h6>
+                            </div>
+
+                            <div class="d-flex flex-row">
+                                <h6 class="font-weight-bold mr-1">Acceptance criteria: </h6>
+                                <h6 th:text="' ' + ${story.getAcceptanceCriteria()}"></h6>
+                            </div>
+
+                            <div class="d-flex flex-row">
+                                <h6 class="font-weight-bold mr-1">Story points: </h6>
+                                <h6 th:text="${story.getStoryPoints()}"></h6>
+                            </div>
+
+                            <div class="d-flex flex-row">
+                                <h6 class="font-weight-bold mr-1">Status: </h6>
+                                <h6 th:if="${story.getStatus().getName()}"
+                                    th:text="${story.getStatus().getName()}"></h6>
+                                <h6 th:unless="' ' + ${story.getStatus().getName()}">NOT DONE</h6>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

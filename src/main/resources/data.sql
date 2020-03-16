@@ -34,8 +34,8 @@ insert into stories (title, short_description, description, number, acceptance_c
 values ('Druga historyjka w 1 Sprincie', 'krotki opis story2', 'dlugi opis', 2, 'akceptacja cos tam', 5, 1, 3, 1);
 
 insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Pierwsza historyjka w 2 Sprincie', 'krotki opis story3', 'dlugi opis', 3, 'akceptacja cos tam', 5, 2, 3, 1);
+values ('Pierwsza historyjka w 2 Sprincie', 'krotki opis story3', 'dlugi opis', 3, 'akceptacja cos tam', 5, 2, 1, 1);
 insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Druga historyjka w 2 Sprincie', 'krotki opis story4', 'dlugi opis', 4, 'akceptacja cos tam', 5, 2, 2, 1);
+values ('Druga historyjka w 2 Sprincie', 'krotki opis story4', 'dlugi opis', 4, 'akceptacja cos tam', 5, 2, 1, 1);
 
 

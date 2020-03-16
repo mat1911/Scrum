@@ -26,12 +26,12 @@
 
             <ul th:unless="${projects.isEmpty()}" th:each="project : ${projects}" class="list-group">
                 <li class="list-group-item">
-                    <div class="d-flex  justify-content-between">
+                    <div class="d-flex justify-content-between">
                         <h3 class="text-left font-weight-bold flex-grow-1" th:text="${project.getName()}"></h3>
                         <a href="#" th:attr="data-href='/recoverProject?id=' + ${project.getId()}"
                            class="btn btn-primary mr-1" data-toggle="modal" data-target="#confirm-recover"
                            style="width: 10%">Recover</a>
-                        <a href="#" class="btn btn-dark" style="width: 10%">Details</a>
+                        <a th:href="@{'/portfolio/projectDetails?id=' + ${project.getId()}}" class="btn btn-dark" style="width: 10%">Details</a>
                     </div>
                 </li>
             </ul>
