@@ -15,6 +15,7 @@ import com.example.scrum.repository.StatusRepository;
 import com.example.scrum.repository.StoryRepository;
 import com.example.scrum.security.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,12 @@ public class StoryService {
     private final ProjectRepository projectRepository;
     private final UserService userService;
     private final StoryMapper storyMapper;
+
+    public Story findById(Long storyId){
+        return storyRepository
+                .findById(storyId)
+                .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
+    }
 
     public void delete(Long number, Long projectId) {
         Optional<Story> story = storyRepository
@@ -58,6 +65,7 @@ public class StoryService {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("@accessManager.isAssignedToStory(#storyId)")
     public Story extractUserFromStory(Long storyId){
 
         Story story = storyRepository

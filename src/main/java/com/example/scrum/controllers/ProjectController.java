@@ -99,7 +99,7 @@ public class ProjectController {
         return "projects/projectsSettings";
     }
 
-    @GetMapping("/deleteUser")
+    @PostMapping("/deleteUser")
     public String deleteUserFromProject(HttpSession session, @RequestParam("id") Long id){
 
         Long projectId = (Long) session.getAttribute("projectId");

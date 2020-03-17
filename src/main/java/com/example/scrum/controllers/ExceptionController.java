@@ -5,6 +5,7 @@ import com.example.scrum.exceptions.ProjectNotSelectedException;
 import com.example.scrum.exceptions.SprintNotFoundException;
 import com.example.scrum.exceptions.StoryNotFoundException;
 import com.example.scrum.exceptions.TokenException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,6 +41,14 @@ public class ExceptionController {
     public String storyNotFoundHandler(StoryNotFoundException e, Model model) {
         model.addAttribute("messageHeader", "STORY IS NOT FOUND!");
         model.addAttribute("message", e.getMessage());
+
+        return "infoPages/informationPage";
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String accessDenied(AccessDeniedException e, Model model) {
+        model.addAttribute("messageHeader", "ACCESS DENIED!");
+        model.addAttribute("message", "You are trying to get into data you are not authorized to access!");
 
         return "infoPages/informationPage";
     }

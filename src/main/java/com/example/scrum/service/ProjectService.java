@@ -7,7 +7,9 @@ import com.example.scrum.mappers.ProjectMapper;
 import com.example.scrum.repository.ProjectRepository;
 import com.example.scrum.repository.StatusRepository;
 import com.example.scrum.repository.UserProjectRepository;
+import com.example.scrum.security.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +72,7 @@ public class ProjectService {
         return project;
     }
 
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public Project updateProject(ProjectDto projectDto) {
 
         Project project = projectRepository
@@ -83,6 +86,7 @@ public class ProjectService {
         return project;
     }
 
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public UserProject addUserToProject(Long userId, Long projectId) {
 
         User invitedUser = userService.findById(userId);
@@ -103,6 +107,7 @@ public class ProjectService {
         return projectMapper.toDto(project);
     }
 
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public Project setProjectStatus(Long projectId, boolean isArchived){
 
         Project project = projectRepository
@@ -115,6 +120,7 @@ public class ProjectService {
     }
 
     public Long deleteUserFromProject(Long userId, Long projectId) {
+
         return userProjectRepository
                 .deleteByUserIdAndProjectId(userId, projectId);
     }
