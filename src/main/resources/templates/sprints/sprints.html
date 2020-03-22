@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sprints</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/stories/editStoryModal.js"></script>
+    <script src="js/sprints/sprints.js"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var sprints = /*[[${sprints}]]*/[];
+        var stories = [];
+
+        for (const sprint of sprints) {
+            stories = stories.concat(sprint.storiesDto);
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-10 mt-5">
+
+            <div class="row">
+                <div class="btn-block">
+                    <a class="btn btn-primary w-100 rounded-0 m-0 font-weight-bold" style="font-size: 24px"
+                       href="#" data-toggle="modal" data-target="#editSprintModal">Add new sprint</a>
+                     </div>
+            </div>
+
+            <div th:if="${sprints}" th:unless="${sprints.isEmpty()}">
+                <div class="row" th:each="sprint : ${sprints}">
+                    <div class="btn-block">
+                        <a class="btn btn-secondary w-100 rounded-0 m-0 font-weight-bold" style="font-size: 24px"
+                           href="#" th:attr="data-target='#sprint' + ${sprint.getId()}" data-toggle="collapse"
+                           th:text="${sprint.getTitle()} + ' from: ' + ${sprint.getBeginDate()} + ' to: ' + ${sprint.getEndDate()}"></a>
+                    </div>
+
+                    <div class="collapse p-2 multi-collapse w-100 text-center" th:id="'sprint' + ${sprint.getId()}">
+
+
+                            <ul th:if="${sprint.getStoriesDto().isEmpty()}" class="list-group">
+                                <li class="list-group-item">
+                                    <h1 class="text-muted">THERE IS NO STORY ASSOCIATED WITH THIS SPRINT!</h1>
+                                </li>
+                            </ul>
+
+
+                        <table th:unless="${sprint.getStoriesDto().isEmpty()}" class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Story points</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="story : ${sprint.getStoriesDto()}">
+                                <td th:text="${story.getId()}"></td>
+                                <td th:text="${story.getTitle()}"></td>
+                                <td th:text="${story.getShortDescription()}"
+                                    th:title="${story.getDescription()}"></td>
+                                <td th:text="${story.getStoryPoints()}"></td>
+                                <td>
+                                    <a href="#" th:attr="data-href=@{'/retireStory/' + ${story.getId()}}"
+                                       class="btn btn-danger"
+                                       data-toggle="modal" data-target="#retireStoryModal">
+                                        Move to backlog
+                                    </a>
+
+                                    <a href="#" data-toggle="modal" data-target="#editStoryModal"
+                                       th:attr="data-storyid=${story.getId()}"
+                                       class="btn btn-primary detailsButton">
+                                        Details
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="sprints/sprintsPopUps"></div>
+</div>
+</body>
+</html>

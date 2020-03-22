@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product backlog</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://kit.fontawesome.com/d1aa552770.js" crossorigin="anonymous"></script>
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/backlog/backlog.js"></script>
+    <script src="js/stories/editStoryModal.js"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var stories = /*[[${stories}]]*/[];
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="fragments/header"></div>
+
+    <div class="row">
+
+        <div th:replace="fragments/menu"></div>
+
+        <div class="col-10 mt-5 text-center">
+
+            <h1 class="font-weight-bold text-center">PRODUCT BACKLOG</h1>
+            <div class="mt-5">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Story points</th>
+                        <th scope="col"><a href="#" class="btn btn-primary rounded-circle font-weight-bold"
+                                           data-toggle="modal" data-target="#editStoryModal">+</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="story : ${stories}">
+                        <td th:text="${story.getId()}"></td>
+                        <td th:text="${story.getTitle()}"></td>
+                        <td th:text="${story.getShortDescription()}" th:title="${story.getDescription()}"></td>
+                        <td th:text="${story.getStoryPoints()}"></td>
+                        <td>
+                            <a href="#" th:attr="data-href=@{'/deleteStory/' + ${story.getId()}}" class="btn btn-danger"
+                               data-toggle="modal" data-target="#deleteStoryModal">
+                                Delete
+                            </a>
+
+                            <a href="#" data-toggle="modal" data-target="#editStoryModal"
+                               th:attr="data-storyid=${story.getId()}"
+                               class="btn btn-primary detailsButton">
+                                Details
+                            </a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="backlog/backlogPopUps"></div>
+
+</div>
+</body>
+</html>

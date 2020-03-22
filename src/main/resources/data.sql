@@ -28,14 +28,17 @@ insert into sprints (id, title, description, begin_date, end_date, status_id, pr
 insert into sprints (id, title, description, begin_date, end_date, status_id, project_id) values (2, '2. Drugi sprint', 'opis testowy', current_timestamp() + 7, current_timestamp() + 14, 2, 1);
 insert into sprints (id, title, description, begin_date, end_date, status_id, project_id) values (3, '1. Pierwszy sprint drugiego projektu', 'opis testowy', current_timestamp(), current_timestamp() + 7, 2, 2);
 
-insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Pierwsza historyjka w 1 Sprincie', 'krotki opis story1', 'dlugi opis', 1, 'akceptacja cos tam', 5, 1, 2, 1);
-insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Druga historyjka w 1 Sprincie', 'krotki opis story2', 'dlugi opis', 2, 'akceptacja cos tam', 5, 1, 3, 1);
+insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
+values ('Pierwsza historyjka w 1 Sprincie', 'krotki opis story1', 'dlugi opis', 'akceptacja cos tam', 5, 1, 2, 1);
+insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
+values ('Druga historyjka w 1 Sprincie', 'krotki opis story2', 'dlugi opis', 'akceptacja cos tam', 5, 1, 3, 1);
 
-insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Pierwsza historyjka w 2 Sprincie', 'krotki opis story3', 'dlugi opis', 3, 'akceptacja cos tam', 5, 2, 1, 1);
-insert into stories (title, short_description, description, number, acceptance_criteria, story_points, sprint_id, status_id, project_id)
-values ('Druga historyjka w 2 Sprincie', 'krotki opis story4', 'dlugi opis', 4, 'akceptacja cos tam', 5, 2, 1, 1);
+insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
+values ('Pierwsza historyjka w 2 Sprincie', 'krotki opis story3', 'dlugi opis', 'akceptacja cos tam', 5, 2, 1, 1);
+insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
+values ('Druga historyjka w 2 Sprincie', 'krotki opis story4', 'dlugi opis', 'akceptacja cos tam', 5, 2, 1, 1);
+
+insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
+values ('Trzecia historyjka w 2 Sprincie', 'krotki opis story4', 'dlugi opis', 'akceptacja cos tam', 5, 2, 1, 1);
 
 

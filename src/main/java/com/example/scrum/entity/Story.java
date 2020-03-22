@@ -14,8 +14,6 @@ public class Story extends AbstractEntity {
 
     private String title;
 
-    private Long number;
-
     @Column(name = "short_description")
     private String shortDescription;
 
@@ -34,10 +32,6 @@ public class Story extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")
     private Project project;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "added_by_user_id")
-    private User addedBy;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_id")

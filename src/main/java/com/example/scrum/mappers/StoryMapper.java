@@ -1,44 +1,33 @@
 package com.example.scrum.mappers;
 
-import com.example.scrum.dto.AssignedUserDto;
-import com.example.scrum.dto.StoryDto;
+import com.example.scrum.dto.StoryBacklogDto;
+import com.example.scrum.dto.StoryKanbanDto;
+import com.example.scrum.entity.Sprint;
 import com.example.scrum.entity.Story;
-import com.example.scrum.entity.User;
-import com.example.scrum.service.UserService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring")
-public abstract class StoryMapper {
+import java.util.List;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Mapping(source = "assignedUserDto", target = "assignedUser", qualifiedByName = "toAssignedUser")
-    public abstract Story toEntity(StoryDto storyDto);
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface StoryMapper {
 
     @Mappings({
-            @Mapping(source = "assignedUser", target = "assignedUserDto", qualifiedByName = "toAssignedUserDto")
+            @Mapping(source = "sprint", target = "sprintId", qualifiedByName = "sprintToSprintId")
     })
-    public abstract StoryDto toDto(Story story);
+    StoryBacklogDto entityToStoryBacklogDto(Story story);
 
-    @Named("toAssignedUserDto")
-     public AssignedUserDto toAssignedUserDto(User assignedUser){
+    @Named("storiesToStoriesBacklogDto")
+    List<StoryBacklogDto> entityToStoryBacklogDto(List<Story> story);
+    Story storyBacklogToEntity(StoryBacklogDto storyDto);
 
-        AssignedUserDto user = userMapper.toAssignedUserDto(assignedUser);
+    @Mapping(source = "assignedUser", target = "assignedUserDto", qualifiedByName = "toAssignedUserDto")
+    StoryKanbanDto entityToStoryKanban(Story story);
 
-        return user == null ? new AssignedUserDto() : user;
+    @Named("sprintToSprintId")
+    static Long sprintToSprintId(Sprint sprint){
+        return (sprint == null || sprint.getId() == null) ? null : sprint.getId();
     }
-
-    @Named("toAssignedUser")
-    public  User toAssignedUser(AssignedUserDto assignedUserDto){
-        return (assignedUserDto != null && assignedUserDto.getId() != null) ? userService.findById(assignedUserDto.getId()) : null;
-    }
-
 }

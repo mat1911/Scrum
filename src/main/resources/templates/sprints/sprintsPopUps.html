@@ -1,0 +1,158 @@
+<div class="modal fade" id="editStoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Story details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mx-3">
+
+                <form id="storyForm" class="was-validated" method="post" th:object="${newStory}"
+                      th:action="@{/updateStory}">
+
+                    <div class="form-group mb-5">
+                        <label for="formTitle" class="text-left  font-weight-bold w-25">Title: </label>
+                        <input id="formTitle" class="form-control" type="text" th:field="*{title}" required>
+                        <div class="invalid-feedback">Please enter title.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formShortDescription" class="text-left flex-grow-1 font-weight-bold w-25">Short
+                            description: </label>
+                        <textarea id="formShortDescription" class="form-control" rows="2"
+                                  maxlength="250" th:field="*{shortDescription}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter short description.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formDescription"
+                               class="text-left flex-grow-1 font-weight-bold w-25">Description: </label>
+                        <textarea id="formDescription" class="form-control" rows="3"
+                                  maxlength="500" th:field="*{description}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter description.</div>
+                    </div>
+
+                    <div class="md-form mb-5">
+
+                        <label for="formAcceptanceCriteria" class="text-left flex-grow-1 font-weight-bold w-25">Acceptance
+                            criteria: </label>
+                        <textarea id="formAcceptanceCriteria" class="form-control" rows="3"
+                                  maxlength="500" th:field="*{acceptanceCriteria}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter acceptance criteria.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formStoryPoints" class="text-left flex-grow-1 font-weight-bold w-25">Story
+                            points: </label>
+                        <input id="formStoryPoints" type="number" class="form-control validate"
+                               th:field="*{storyPoints}"
+                               required min="1">
+
+                        <div class="invalid-feedback">Please enter story point (>0) .</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <input id="formSprintId" type="hidden" class="form-control" th:field="*{sprintId}">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editSprintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Create sprint</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mx-3">
+
+                <form id="sprintForm" class="was-validated" method="post" th:object="${newSprint}"
+                      th:action="@{/createSprint}">
+
+                    <div class="form-group">
+                        <label for="formSprintTitle" class="text-left font-weight-bold w-25">Title: </label>
+                        <input id="formSprintTitle" class="form-control" type="text" th:field="*{title}" required>
+                        <div class="invalid-feedback">Please enter title.</div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="formSprintDescription" class="text-left font-weight-bold w-25">Short
+                            description: </label>
+                        <textarea id="formSprintDescription" class="form-control" rows="2"
+                                  maxlength="250" th:field="*{description}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter description.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataSprintBeginForm" class="text-left font-weight-bold w-25">Date begin</label>
+                        <input id="dataSprintBeginForm" type="date" class="form-control" th:field="*{beginDate}" required>
+                        <div class="invalid-feedback">Please provide end date.</div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="dataSprintEndForm" class="text-left font-weight-bold w-25">Date end</label>
+                        <input id="dataSprintEndForm" type="date" class="form-control" th:field="*{endDate}" required>
+                        <div class="invalid-feedback">Please provide end date.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="formSprint_Id" type="hidden" class="form-control" th:field="*{id}">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="retireStoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Do you really want to move this story to backlog?</h5>
+                <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <form id="retireStoryForm" method="post">
+                    <div class="form-group">
+                        <button class="btn btn-danger" type="submit">Move to backlog</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

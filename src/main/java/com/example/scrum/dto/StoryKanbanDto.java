@@ -7,12 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-public class StoryDto {
+public class StoryKanbanDto {
 
     private Long id;
     private String title;
-    private Long number;
     private String shortDescription;
     private String description;
     private Integer storyPoints;

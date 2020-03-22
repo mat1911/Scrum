@@ -13,6 +13,6 @@ import java.util.List;
 @Builder
 public class StoriesDtoList {
 
-    private List<StoryDto> stories;
+    private List<StoryKanbanDto> stories;
 
 }

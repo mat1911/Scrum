@@ -1,0 +1,98 @@
+<div class="modal fade" id="editStoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Story details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mx-3">
+
+                <form id="storyForm" class="was-validated" method="post" th:object="${newStory}" th:action="@{/updateStory}">
+
+                    <div class="form-group mb-5">
+                        <label for="formTitle" class="text-left  font-weight-bold w-25">Title: </label>
+                        <input id="formTitle" class="form-control" type="text" th:field="*{title}" required>
+                        <div class="invalid-feedback">Please enter title.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formShortDescription" class="text-left flex-grow-1 font-weight-bold w-25">Short
+                            description: </label>
+                        <textarea id="formShortDescription" class="form-control" rows="2"
+                                  maxlength="250" th:field="*{shortDescription}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter short description.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formDescription" class="text-left flex-grow-1 font-weight-bold w-25">Description: </label>
+                        <textarea id="formDescription" class="form-control" rows="3"
+                                  maxlength="500" th:field="*{description}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter description.</div>
+                    </div>
+
+                    <div class="md-form mb-5">
+
+                        <label for="formAcceptanceCriteria" class="text-left flex-grow-1 font-weight-bold w-25">Acceptance
+                            criteria: </label>
+                        <textarea id="formAcceptanceCriteria" class="form-control" rows="3"
+                                  maxlength="500" th:field="*{acceptanceCriteria}" required></textarea>
+
+                        <div class="invalid-feedback">Please enter acceptance criteria.</div>
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        <label for="formStoryPoints" class="text-left flex-grow-1 font-weight-bold w-25">Story points: </label>
+                        <input id="formStoryPoints" type="number" class="form-control validate" th:field="*{storyPoints}"
+                               required min="1">
+
+                        <div class="invalid-feedback">Please enter story point (>0) .</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sprint">Sprint</label>
+                        <select id="sprint" th:field="*{sprintId}">
+                            <option th:text="None" th:value="null" selected></option>
+                            <option th:each="sprint : ${sprints}" th:value="${sprint.getId()}"
+                                    th:text="${sprint.getTitle()} + ' from: ' + ${sprint.getBeginDate()} + ' to: ' + ${sprint.getEndDate()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteStoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Do you really want to delete this story?</h5>
+                <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <form id="deleteStoryForm" method="post">
+                    <div class="form-group">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

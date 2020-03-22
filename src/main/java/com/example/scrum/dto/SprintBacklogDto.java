@@ -1,7 +1,5 @@
 package com.example.scrum.dto;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +14,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SprintPortfolioDto {
+public class SprintBacklogDto {
 
+    private Long id;
     private String title;
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate beginDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    private Set<StoryKanbanDto> stories = new HashSet<>();
+    private Set<StoryBacklogDto> storiesDto = new HashSet<>();
 }

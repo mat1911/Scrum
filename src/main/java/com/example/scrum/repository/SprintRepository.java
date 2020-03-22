@@ -14,6 +14,9 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
     List<Sprint> findAllByProject_IdOrderByIdAsc(Long projectId);
 
-    @Query("select s from Sprint s where s.id=:projectId and s.beginDate <= :todayDate and s.endDate >= :todayDate")
+    @Query("select s from Sprint s where s.project.id=:projectId and s.beginDate <= :todayDate and s.endDate >= :todayDate")
     Optional<Sprint> findCurrentByProject_Id(@Param("projectId")Long projectId, @Param("todayDate") LocalDate todayDate);
+
+    @Query("select s from Sprint s where s.project.id=:projectId and s.endDate >= :todayDate order by s.id")
+    List<Sprint> findAllNotFinished(@Param("projectId")Long projectId, @Param("todayDate") LocalDate todayDate);
 }
