@@ -8,6 +8,7 @@ import com.example.scrum.service.EmailService;
 import com.example.scrum.service.ProjectService;
 import com.example.scrum.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,24 +43,22 @@ public class ProjectController {
     }
 
     @PostMapping("/newProject")
-    public String addNewProject(ProjectDto project){
+    public String addNewProject(@ModelAttribute ProjectDto project){
         Long userId = UserDetailServiceImpl.getCurrentUserId();
         projectService.addNewProject(userId, project);
         return "redirect:/projects";
     }
 
-    @PostMapping("/updateProject")
-    public String updateProject(@ModelAttribute ProjectDto project, HttpSession session){
-
-        Long projectId = (Long) session.getAttribute("projectId");
-        project.setId(projectId);
-        projectService.updateProject(project);
+    @PostMapping("/updateProject/{projectId}")
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
+    public String updateProject(@ModelAttribute ProjectDto project, @PathVariable("projectId") Long projectId){
+        projectService.updateProject(project, projectId);
         return "redirect:/projects";
     }
 
-    @PostMapping("/selectProject")
+    @PostMapping("/selectProject/{projectId}")
     @ResponseBody
-    public void selectProject(HttpSession session, @RequestParam("projectId") Long projectId){
+    public void selectProject(HttpSession session, @PathVariable("projectId") Long projectId){
         session.setAttribute("projectId", projectId);
         session.setAttribute("productOwnerId", projectService.findProjectOwner(projectId).getId());
       }
@@ -80,6 +79,7 @@ public class ProjectController {
     }
 
     @GetMapping("/acceptInvitation")
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public String assignUserToProject(@RequestParam("token") String token, @RequestParam("projectId") Long projectId){
 
         Long invitedUserId = UserDetailServiceImpl.getCurrentUserId();
@@ -89,8 +89,8 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/projectSettings")
-    public String getProjectSettingsPage(HttpSession session, Model model, @RequestParam("projectId") Long projectId){
+    @GetMapping("/projectSettings/{projectId}")
+    public String getProjectSettingsPage(HttpSession session, Model model, @PathVariable("projectId") Long projectId){
 
         session.setAttribute("projectId", projectId);
         session.setAttribute("productOwnerId", projectService.findProjectOwner(projectId).getId());
@@ -99,27 +99,26 @@ public class ProjectController {
         return "projects/projectsSettings";
     }
 
-    @PostMapping("/deleteUser")
-    public String deleteUserFromProject(HttpSession session, @RequestParam("id") Long id){
+    @PostMapping("/deleteUser/{id}")
+    public String deleteUserFromProject(HttpSession session, @PathVariable("id") Long id){
 
         Long projectId = (Long) session.getAttribute("projectId");
         projectService.deleteUserFromProject(id, projectId);
 
-        return "redirect:/projectSettings?projectId=" + projectId;
+        return "redirect:/projectSettings/" + projectId;
     }
 
     @PostMapping("/archiveProject")
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public String archiveProject(HttpSession session){
         Long projectId = (Long) session.getAttribute("projectId");
         projectService.setProjectStatus(projectId, true);
         return "redirect:/projects";
     }
 
-    @PostMapping("/recoverProject")
-    public String recoverProject(@RequestParam("id") Long id){
-
-        System.out.println("wchodze");
-
+    @PostMapping("/recoverProject/{id}")
+    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
+    public String recoverProject(@PathVariable("id") Long id){
         projectService.setProjectStatus(id, false);
         return "redirect:/projects";
     }

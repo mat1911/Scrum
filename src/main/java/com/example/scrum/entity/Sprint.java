@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,12 +28,8 @@ public class Sprint extends AbstractEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "status_id")
-    private Status status;
-
     @OneToMany(mappedBy = "sprint", fetch = FetchType.EAGER)
-    private Set<Story> stories = new HashSet<>();
+    private List<Story> stories = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")

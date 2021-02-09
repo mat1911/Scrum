@@ -20,7 +20,7 @@ $(document).ready(function () {
                 .attr('id');
 
             $.ajax({
-                url: "http://localhost:8080/selectProject?projectId=" + projectId,
+                url: "http://localhost:8080/selectProject/" + projectId,
                 type: 'POST'
             });
         }

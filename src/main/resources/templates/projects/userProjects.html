@@ -46,7 +46,7 @@
                             <a th:if="${project.getOwnerId()} == ${#authentication.getPrincipal().getUserId()}" data-toggle="modal" data-target="#myModal" class="inviteUserDialog btn btn-dark mr-1"
                                href="#myModal">Invite user</a>
 
-                            <a class="btn btn-dark" th:href="'/projectSettings?projectId=' + ${project.getId()}">Settings</a>
+                            <a class="btn btn-dark" th:href="'/projectSettings/' + ${project.getId()}">Settings</a>
 
                         </div>
                     </div>

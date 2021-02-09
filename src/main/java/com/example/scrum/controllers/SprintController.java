@@ -37,9 +37,14 @@ public class SprintController {
 
     @PostMapping("/updateSprint/{id}")
     public String updateSprint(SprintBacklogDto sprintBacklogDto, HttpSession session, @PathVariable("id") Long id){
-
         Long projectId = (Long) session.getAttribute("projectId");
-        System.out.println(sprintBacklogDto);
+        sprintService.updateSprint(projectId, id,sprintBacklogDto);
+        return "redirect:/sprints";
+    }
+
+    @PostMapping("/deleteSprint/{id}")
+    public String deleteSprint(@PathVariable("id") Long id){
+        sprintService.deleteSprint(id);
         return "redirect:/sprints";
     }
 

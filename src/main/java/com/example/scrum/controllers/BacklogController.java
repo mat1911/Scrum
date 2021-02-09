@@ -20,10 +20,6 @@ public class BacklogController {
     @GetMapping("/backlog")
     public String getBacklog(Model model, HttpSession session) {
         Long projectId = (Long) session.getAttribute("projectId");
-
-        var s = sprintService.findAllNotFinished(projectId);
-
-
         model.addAttribute("stories", storyService.findAllNotAssignedToSprint(projectId));
         model.addAttribute("sprints", sprintService.findAllNotFinished(projectId));
         model.addAttribute("newStory", new StoryBacklogDto());

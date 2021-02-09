@@ -24,9 +24,9 @@ insert into user_projects(user_id, project_id, user_capacity) values (1, 2, 15);
 insert into user_projects(user_id, project_id, user_capacity) values (2, 1, 15);
 insert into user_projects(user_id, project_id, user_capacity) values (2, 2, 15);
 
-insert into sprints (id, title, description, begin_date, end_date, status_id, project_id) values (1, '1. Pierwszy sprint', 'opis testowy', current_timestamp(), current_timestamp() + 7, 2, 1);
-insert into sprints (id, title, description, begin_date, end_date, status_id, project_id) values (2, '2. Drugi sprint', 'opis testowy', current_timestamp() + 7, current_timestamp() + 14, 2, 1);
-insert into sprints (id, title, description, begin_date, end_date, status_id, project_id) values (3, '1. Pierwszy sprint drugiego projektu', 'opis testowy', current_timestamp(), current_timestamp() + 7, 2, 2);
+insert into sprints (id, title, description, begin_date, end_date, project_id) values (1, '1. Pierwszy sprint', 'opis testowy', current_timestamp(), current_timestamp() + 7, 1);
+insert into sprints (id, title, description, begin_date, end_date, project_id) values(2, '2. Drugi sprint', 'opis testowy', current_timestamp() + 7, current_timestamp() + 14, 1);
+insert into sprints (id, title, description, begin_date, end_date, project_id) values (3, '1. Pierwszy sprint drugiego projektu', 'opis testowy', current_timestamp(), current_timestamp() + 7, 2);
 
 insert into stories (title, short_description, description, acceptance_criteria, story_points, sprint_id, status_id, project_id)
 values ('Pierwsza historyjka w 1 Sprincie', 'krotki opis story1', 'dlugi opis', 'akceptacja cos tam', 5, 1, 2, 1);

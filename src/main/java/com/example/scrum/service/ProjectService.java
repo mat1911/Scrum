@@ -43,8 +43,8 @@ public class ProjectService {
         return userProjectRepository
                 .findAllByUserId(userId)
                 .stream()
-                .filter(userProject -> !userProject.getProject().getIsArchived())
                 .map(UserProject::getProject)
+                .filter(project -> !project.getIsArchived())
                 .map(projectMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -54,8 +54,8 @@ public class ProjectService {
         return userProjectRepository
                 .findAllByUserId(userId)
                 .stream()
-                .filter(userProject -> userProject.getProject().getIsArchived())
                 .map(UserProject::getProject)
+                .filter(Project::getIsArchived)
                 .map(projectMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -66,17 +66,17 @@ public class ProjectService {
         User user = userService.findById(userId);
 
         project.setOwner(user);
+        project.setIsArchived(false);
         project = projectRepository.save(project);
         assignProjectToUser(user, project);
 
         return project;
     }
 
-    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
-    public Project updateProject(ProjectDto projectDto) {
+    public Project updateProject(ProjectDto projectDto, Long projectId) {
 
         Project project = projectRepository
-                .findById(projectDto.getId())
+                .findById(projectId)
                 .orElseThrow(() -> new ObjectNotFoundException("Project with a such id is not found!"));
 
         project.setName(projectDto.getName());
@@ -86,7 +86,6 @@ public class ProjectService {
         return project;
     }
 
-    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public UserProject addUserToProject(Long userId, Long projectId) {
 
         User invitedUser = userService.findById(userId);
@@ -107,7 +106,6 @@ public class ProjectService {
         return projectMapper.toDto(project);
     }
 
-    @PreAuthorize("@accessManager.isProductOwner(#projectId)")
     public Project setProjectStatus(Long projectId, boolean isArchived){
 
         Project project = projectRepository

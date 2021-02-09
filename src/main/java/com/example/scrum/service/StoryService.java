@@ -53,12 +53,8 @@ public class StoryService {
         return story;
     }
 
-    public StoryBacklogDto findById(Long storyId) {
-        Story story = storyRepository
-                .findById(storyId)
-                .orElseThrow(() -> new StoryNotFoundException("Story with a such id is not found!"));
-
-        return storyMapper.entityToStoryBacklogDto(story);
+    public List<Story> findAllByProjectIdAndSprintId(Long projectId, Long sprintId) {
+        return storyRepository.findAllByProject_IdAndSprint_Id(projectId, sprintId);
     }
 
     public List<StoryBacklogDto> findAllNotAssignedToSprint(Long projectId) {
@@ -71,18 +67,6 @@ public class StoryService {
                 .findAllByProject_Id(projectId)
                 .stream()
                 .filter(story -> Objects.isNull(story.getSprint()))
-                .map(storyMapper::entityToStoryBacklogDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<StoryBacklogDto> findAllByProjectId(Long projectId) {
-        if (projectId == null) {
-            throw new ProjectNotSelectedException("Project is not selected!");
-        }
-
-        return storyRepository
-                .findAllByProject_Id(projectId)
-                .stream()
                 .map(storyMapper::entityToStoryBacklogDto)
                 .collect(Collectors.toList());
     }
@@ -151,7 +135,6 @@ public class StoryService {
 
         return storyRepository.save(story);
     }
-
 
     public void updateStoriesStatus(StoriesDtoList storiesDtoList) {
 

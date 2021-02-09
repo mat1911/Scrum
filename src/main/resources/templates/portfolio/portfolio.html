@@ -29,12 +29,12 @@
                     <div class="d-flex justify-content-between">
                         <h3 class="text-left font-weight-bold flex-grow-1" th:text="${project.getName()}"></h3>
                         <a th:if="${project.getOwnerId()} == ${#authentication.getPrincipal().getUserId()}" href="#"
-                           th:attr="data-href='/recoverProject?id=' + ${project.getId()}"
+                           th:attr="data-href='/recoverProject/' + ${project.getId()}"
                            class="btn btn-primary mr-1" data-toggle="modal" data-target="#confirm-recover"
                            style="width: 10%">Recover</a>
 
 
-                        <a th:href="@{'/portfolio/projectDetails?id=' + ${project.getId()}}" class="btn btn-dark"
+                        <a th:href="@{'/portfolio/projectDetails/' + ${project.getId()}}" class="btn btn-dark"
                            style="width: 10%">Details</a>
                     </div>
                 </li>

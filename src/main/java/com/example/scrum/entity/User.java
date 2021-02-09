@@ -34,13 +34,13 @@ public class User extends AbstractEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Project> ownedProjects = new HashSet<>();
 
-    @OneToMany(mappedBy = "assignedUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignedUser", fetch = FetchType.EAGER)
     private Set<Story> stories = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserProject> userProjects = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

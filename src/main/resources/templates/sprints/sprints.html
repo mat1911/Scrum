@@ -36,7 +36,7 @@
                 <div class="btn-block">
                     <a class="btn btn-primary w-100 rounded-0 m-0 font-weight-bold" style="font-size: 24px"
                        href="#" data-toggle="modal" data-target="#editSprintModal">Add new sprint</a>
-                     </div>
+                </div>
             </div>
 
             <div th:if="${sprints}" th:unless="${sprints.isEmpty()}">
@@ -49,13 +49,11 @@
 
                     <div class="collapse p-2 multi-collapse w-100 text-center" th:id="'sprint' + ${sprint.getId()}">
 
-
-                            <ul th:if="${sprint.getStoriesDto().isEmpty()}" class="list-group">
-                                <li class="list-group-item">
-                                    <h1 class="text-muted">THERE IS NO STORY ASSOCIATED WITH THIS SPRINT!</h1>
-                                </li>
-                            </ul>
-
+                        <ul th:if="${sprint.getStoriesDto().isEmpty()}" class="list-group">
+                            <li class="list-group-item">
+                                <h1 class="text-muted">THERE IS NO STORY ASSOCIATED WITH THIS SPRINT!</h1>
+                            </li>
+                        </ul>
 
                         <table th:unless="${sprint.getStoriesDto().isEmpty()}" class="table table-hover">
                             <thead>
@@ -89,6 +87,17 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-danger mr-1"
+                               href="#" data-toggle="modal" data-target="#deleteSprintModal"
+                               th:attr="data-href=@{/deleteSprint/}, data-sprintid=${sprint.getId()}">Delete sprint</a>
+
+                            <a class="btn btn-primary rounded-0 m-0"
+                               href="#" data-toggle="modal" data-target="#editSprintModal"
+                               th:attr="data-sprintid=${sprint.getId()}">More sprint details</a>
+                        </div>
+
                     </div>
                 </div>
             </div>

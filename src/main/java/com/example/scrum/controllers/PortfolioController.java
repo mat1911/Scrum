@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public class PortfolioController {
         return "portfolio/portfolio";
     }
 
-    @GetMapping("/portfolio/projectDetails")
-    public String getProjectDetails(Model model, @RequestParam Long id){
+    @GetMapping("/portfolio/projectDetails/{id}")
+    public String getProjectDetails(Model model, @PathVariable("id") Long id){
 
         List<SprintPortfolioDto> s = sprintService.getAllSprintPortfolioDto(id);
         model.addAttribute("project", projectService.getCurrentProjectAsDto(id));

@@ -23,7 +23,7 @@
             <h1 class="text-center font-weight-bold">PROJECT SETTINGS</h1>
 
             <form th:if="${session.productOwnerId} == ${#authentication.getPrincipal().getUserId()}" id="changeForm"
-                  method="post" th:action="@{/updateProject}" th:object="${currentProject}" class="needs-validation"
+                  method="post" th:action="@{/updateProject/} + ${session.projectId}" th:object="${currentProject}" class="needs-validation"
                   novalidate>
 
                 <div class="form-group">
@@ -68,7 +68,7 @@
                                 th:unless="${user.getId()} == ${#authentication.getPrincipal().getUserId()}">
 
                                 <a href="#" data-toggle="modal" data-target="#confirm-delete"
-                                        th:attr="data-href='/deleteUser?id=' + ${user.getId()}" style="color: inherit;">
+                                        th:attr="data-href='/deleteUser/' + ${user.getId()}" style="color: inherit;">
                                     <i class="fas fa-trash"></i>
                                 </a>
 
