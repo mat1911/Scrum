@@ -34,17 +34,17 @@ spring.mail.properties.mail.smtp.writetimeout = 5000
 
 Screen with all user projects.
 
-![User projects](https://drive.google.com/uc?export=view&id=1z6NUCgRbaOicPPDBFymSRXYZK64JvDhV)
+![User projects](https://github.com/mat1911/Screenshots/blob/main/Scrum/scrum_screenshot.PNG?raw=true)
 
 <br />
 
 Screen with kanban board.
 
-![User projects](https://drive.google.com/uc?export=view&id=1GAQmAyYu9sLEYWAQRroCF-N3w23VDPKy)
+![Kanban board](https://github.com/mat1911/Screenshots/blob/main/Scrum/scrum_screenshot_2.PNG?raw=true)
 
 <br />
 
 Screen with product backlog.
 
-![User projects](https://drive.google.com/uc?export=view&id=1zLq2y5SdA6UERXkmkuS7Tt_0V-smWUzp)
+![Product backlog](https://github.com/mat1911/Screenshots/blob/main/Scrum/scrum_screenshot_3.PNG?raw=true)
 
